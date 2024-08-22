@@ -1,4 +1,4 @@
-![CliqueUPLogo](public\LightLogo.png)
+![CliqueUPLogo](build\LightLogo.png)
 # Welcome to CliqueUP!
 
 The app where you can find events near you!
