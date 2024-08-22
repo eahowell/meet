@@ -1,17 +1,17 @@
 ![CliqueUPLogo](public/LightLogo.png)
+
 # Welcome to CliqueUP!
 
 The app where you can find events near you!
 
 A serverless, progressive web application (PWA) built with React that fetches and displays upcoming events using the Google Calendar API. This project follows Test-Driven Development (TDD) practices.
 
-
-
 ## Table of Contents
 
 - [Welcome to CliqueUP!](#welcome-to-cliqueup)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
+    - [Architectural Diagram](#architectural-diagram)
     - [User Stories](#user-stories)
       - [Feature 1: Filter Events by City](#feature-1-filter-events-by-city)
       - [Feature 2: Show/Hide Event Details](#feature-2-showhide-event-details)
@@ -35,6 +35,10 @@ A serverless, progressive web application (PWA) built with React that fetches an
 - Offline functionality
 - Responsive design
 - Display Charts Visualizing Event Details
+
+### Architectural Diagram
+
+![ArchitecturalDiagram](public/ArchitecturalDiagram.png)
 
 ### User Stories
 
