@@ -79,9 +79,11 @@
 
       getAccessToken.onclick = function () {
         let code = codeValue.value;
+        console.log(code);
 
         if (decodeURIComponent(code) === code) {
           code = encodeURIComponent(codeValue.value);
+          console.log(code);
         }
         const getTokenRequest = getToken +  "/" + code;
         fetch(getTokenRequest)
