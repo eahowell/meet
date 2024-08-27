@@ -49,21 +49,26 @@ As a user, I want to filter events by city so that I can find events happening i
 ```gherkin
 Feature: Filter Events by City
 
-Scenario: User filters events for a specific city
-  Given the user is on the event listing page
-  When the user selects "New York" from the city filter options
-  Then the app should display only events happening in New York
+Scenario: When user hasn’t searched for a city, show upcoming events from all cities
+  Given user hasn’t searched for any city
+  When the user opens the app
+  Then the user should see the list of upcoming events
+
+Scenario: User should see a list of suggestions when they search for a city
+  Given the main page is open
+  When user starts typing in the city textbox
+  Then the user should see a list of cities (suggestions) that match what they’ve typed
+
+Scenario: User can select a city from the suggested list
+  Given the user was typing “Berlin” in the city textbox AND the list of suggested cities is showing
+  When the user selects a city (e.g., “Berlin, Germany”) from the list
+  Then their city should be changed to that city (i.e., “Berlin, Germany”) AND the user should receive a list of upcoming events in that city
 
 Scenario: User filters for a city with no events
   Given the user is on the event listing page
   When the user selects "Small Town" from the city filter options
   And there are no events scheduled in Small Town
   Then the app should display a message "No events found in Small Town"
-
-Scenario: User resets city filter
-  Given the user has previously filtered events for "London"
-  When the user selects "All Cities" or clears the city filter
-  Then the app should display events from all available cities
 ```
 
 #### Feature 2: Show/Hide Event Details
