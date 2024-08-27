@@ -5,11 +5,10 @@
   "homepage": "https://eahowell.github.io/meet",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4",
     "workbox-background-sync": "^6.6.0",
     "workbox-broadcast-update": "^6.6.0",
@@ -52,6 +51,8 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.0.0",
     "gh-pages": "^6.1.1"
   }
 }
