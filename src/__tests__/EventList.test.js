@@ -2,6 +2,7 @@
 
 import { render, screen } from '@testing-library/react';
 import EventList from '../components/EventList';
+import { getEvents } from '../api';
 
 describe('<EventList /> component', () => {
     // Opted to not use the beforeEach for rendering the EventList due to "Forbidden usage of render within testing framework beforeEach" error
@@ -11,15 +12,10 @@ describe('<EventList /> component', () => {
     expect(list).toBeInTheDocument();
   });
 
-  test('renders correct number of events', () => {
-    const events = [
-      { id: 1 },
-      { id: 2 },
-      { id: 3 },
-      { id: 4 }
-    ];
-    render(<EventList events={events} />);
+  test('renders correct number of events', async () => {
+    const allEvents = await getEvents();
+    render(<EventList events={allEvents} />);
     const listItems = screen.getAllByRole("listitem");
-    expect(listItems).toHaveLength(4);
+    expect(listItems).toHaveLength(allEvents.length);
   });
 });
