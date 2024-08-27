@@ -62,7 +62,8 @@ Scenario: User should see a list of suggestions when they search for a city
 Scenario: User can select a city from the suggested list
   Given the user was typing “Berlin” in the city textbox AND the list of suggested cities is showing
   When the user selects a city (e.g., “Berlin, Germany”) from the list
-  Then their city should be changed to that city (i.e., “Berlin, Germany”) AND the user should receive a list of upcoming events in that city
+  Then their city should be changed to that city (i.e., “Berlin, Germany”) AND the user should 
+  receive a list of upcoming events in that city
 
 Scenario: User filters for a city with no events
   Given the user is on the event listing page
