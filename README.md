@@ -78,6 +78,22 @@ As a user, I want to be able to show or hide event details so that I can quickly
 ```gherkin
 Feature: Show/Hide Event Details
 
+Scenario: An event element is collapsed by default
+    Given the user is viewing the list of events
+    Then all event elements should be in a collapsed state
+
+  Scenario: User can expand an event to see details
+    Given the user is viewing the list of events
+    When the user clicks on a collapsed event element
+    Then the event element should expand
+    And the event details should be visible
+
+  Scenario: User can collapse an event to hide details
+    Given the user is viewing an expanded event element
+    When the user clicks on the expanded event element
+    Then the event element should collapse
+    And the event details should be hidden
+
 Scenario: User toggles event details
   Given the user is viewing an event in the list
   When the user clicks on the show/hide details button for an event
@@ -100,6 +116,17 @@ As a user, I want to specify the number of events displayed so that I can contro
 
 ```gherkin
 Feature: Specify Number of Events
+
+Scenario: When user hasn't specified a number, 32 events are shown by default
+    Given the user hasn't specified a number of events to display
+    When the user loads the event list
+    Then 32 events should be displayed
+
+  Scenario: User can change the number of events displayed
+    Given the user is viewing the event list
+    When the user specifies a different number of events to display
+    Then the specified number of events should be shown
+    And the event list should update accordingly
 
 Scenario: User changes the number of events displayed
   Given the user is on the event listing page
