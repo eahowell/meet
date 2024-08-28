@@ -67,8 +67,22 @@ describe("<CitySearch /> component", () => {
 
     // Mock data
     const mockEvents = [
-      { id: 1, location: "New York" },
-      { id: 2, location: "London" },
+      {
+        id: 1,
+        location: "New York",
+        start: {
+          dateTime: "2023-06-15T19:00:00+02:00",
+          timeZone: "Europe/Berlin",
+        },
+      },
+      {
+        id: 2,
+        location: "London",
+        start: {
+          dateTime: "2023-06-15T19:00:00+02:00",
+          timeZone: "Europe/Berlin",
+        },
+      },
       // No events in "Small Town"
     ];
 
