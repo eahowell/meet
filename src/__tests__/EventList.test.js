@@ -1,7 +1,8 @@
 // src/__tests__/EventList.test.js
 
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import EventList from "../components/EventList";
 
 describe("<EventList /> component", () => {
@@ -76,12 +77,15 @@ describe("<EventList /> component", () => {
     });
   });
 
-  test('collapses all expanded event details when "Collapse All" is clicked', () => {
+  test('collapses all expanded event details when "Collapse All" is clicked', async () => {
+    const user = userEvent.setup();
     render(<EventList events={mockEvents} />);
 
     // Expand all events
     const showDetailsButtons = screen.getAllByText("Show Details");
-    showDetailsButtons.forEach((button) => fireEvent.click(button));
+    for (const button of showDetailsButtons) {
+      await user.click(button);
+    }
 
     // Verify all events are expanded
     mockEvents.forEach((event) => {
@@ -90,7 +94,7 @@ describe("<EventList /> component", () => {
 
     // Click "Collapse All" button
     const collapseAllButton = screen.getByText("Collapse All");
-    fireEvent.click(collapseAllButton);
+    await user.click(collapseAllButton);
 
     // Verify all events are collapsed
     mockEvents.forEach((event) => {
