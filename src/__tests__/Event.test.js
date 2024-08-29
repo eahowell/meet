@@ -21,10 +21,15 @@ describe("<Event /> component", () => {
     },
   };
 
-  test("renders event element collapsed by default", () => {
+  test("renders event element with title and details collapsed by default", () => {
     render(<Event event={mockEvent} />);
     expect(screen.getByText(mockEvent.summary)).toBeInTheDocument();
     expect(screen.queryByText(mockEvent.description)).not.toBeInTheDocument();
+  });
+
+  test("renders event location", () => {
+    render(<Event event={mockEvent} />);
+    expect(screen.getByText(mockEvent.location)).toBeInTheDocument();
   });
 
   test('shows "Show Details" button when event is collapsed', () => {
@@ -41,6 +46,19 @@ describe("<Event /> component", () => {
 
     expect(screen.getByText(mockEvent.description)).toBeInTheDocument();
     expect(screen.getByText("Hide Details")).toBeInTheDocument();
+  });
+
+  test("renders event details when event is expanded", () => {
+    render(<Event event={mockEvent} />);
+    const showDetailsButton = screen.getByText("Show Details");
+
+    fireEvent.click(showDetailsButton);
+
+    expect(screen.getByText(mockEvent.description)).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "See details on Google Calendar" })
+    ).toHaveAttribute("href", mockEvent.htmlLink);
+    expect(screen.getByText(mockEvent.organizer.email)).toBeInTheDocument();
   });
 
   test('shows "Hide Details" button when event is expanded', () => {
@@ -158,6 +176,4 @@ describe("Multiple events interaction", () => {
     expect(screen.getByText("Description 2")).toBeInTheDocument();
     expect(screen.getAllByText("Hide Details")).toHaveLength(2);
   });
-
-  
 });

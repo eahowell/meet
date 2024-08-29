@@ -39,7 +39,7 @@ const Event = ({ event, forceCollapse }) => {
             <strong>Description:</strong> {event.description}
           </p>
           <p>
-            <strong>Organizer:</strong> {event.organizor}
+            <strong>Organizer:</strong> {event.organizer.email}
           </p>
           <a href={event.htmlLink}>See details on Google Calendar</a>
         </div>
