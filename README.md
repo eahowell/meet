@@ -129,11 +129,6 @@ Scenario: When user hasn't specified a number, 32 events are shown by default
   Then the specified number of events should be shown
   And the event list should update accordingly
 
-Scenario: User changes the number of events displayed
-  Given the user is on the event listing page
-  When the user selects "25" from the "Number of Events" dropdown
-  Then the app should update to display 25 events
-
 Scenario: User requests more events than available
   Given there are 15 total events
   When the user selects "50" from the "Number of Events" dropdown

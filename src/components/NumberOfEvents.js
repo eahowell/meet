@@ -2,25 +2,13 @@
 import { useState } from "react";
 
 const NumberOfEvents = () => {
-  const [numberOfEvents, setNumberOfEvents] = useState(32);
+  const [inputValue, setInputValue] = useState(32);
 
-  const handleInputChanged = (event) => {
-    const value = event.target.value;
-    let newValue;
-
-    if (value === "" || isNaN(value)) {
-      newValue = 32;
-    } else {
-      const numberValue = Number(value);
-      if (numberValue <= 0) {
-        newValue = 1;
-      } else {
-        newValue = Math.round(numberValue);
-      }
+    const handleInputChanged = (event) => {
+        const value = event.target.value;
+        const numberValue = Math.abs(Math.round(Number(value)));
+        setInputValue(numberValue);
     }
-
-    setNumberOfEvents(newValue);
-  };
 
   return (
     <div id="number-of-events" data-testid="number-of-events">
@@ -30,8 +18,10 @@ const NumberOfEvents = () => {
         type="number"
         className="number-of-events"
         aria-label="Number of Events"
-        value={numberOfEvents}
+        value={inputValue}
         onChange={handleInputChanged}
+        onClick={(e) => e.target.select()}
+        onFocus={(e) => e.target.select()}
         placeholder="Enter number of events"
         min="1"
       />
