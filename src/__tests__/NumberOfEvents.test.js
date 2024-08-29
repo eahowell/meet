@@ -7,6 +7,14 @@ import "@testing-library/jest-dom";
 import NumberOfEvents from "../components/NumberOfEvents";
 
 describe("<NumberOfEvents /> component", () => {
+  test("contains an element with the role of the textbox", () => {
+    render(<NumberOfEvents />);
+    const numberInput = screen.getByRole("spinbutton", {
+      name: "Number of Events",
+    });
+    expect(numberInput).toBeInTheDocument();
+  });
+
   test("renders number input with default value of 32", () => {
     render(<NumberOfEvents />);
     const numberInput = screen.getByLabelText("Number of Events");
