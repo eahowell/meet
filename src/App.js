@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import CitySearch from "./components/CitySearch";
 import EventList from "./components/EventList";
+import NumberOfEvents from "./components/NumberOfEvents";
 import { getEvents, extractLocations } from "./api";
 import "./App.css";
 
@@ -30,6 +31,9 @@ const App = () => {
   return (
     <div className="App">
       <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} />
+      <br />
+      <NumberOfEvents />
+      <br />
       {filteredEvents.length === 0 ? (
         <ul id="event-list" data-testid="event-list" aria-label="event list">
           <p>No events found in {currentCity}</p>

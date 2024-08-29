@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://eahowell.github.io/meet",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/user-event": "^14.5.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

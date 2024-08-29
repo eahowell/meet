@@ -31,6 +31,7 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
       data-testid="city-search"
       role="region"
       aria-label="City Search"
+      
     >
       <input
         type="text"

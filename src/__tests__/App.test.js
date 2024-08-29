@@ -17,4 +17,10 @@ describe("<App /> component", () => {
     const citySearch = screen.getByTestId("city-search");
     expect(citySearch).toBeInTheDocument();
   });
+
+  test("renders NumberOfEvents", () => {
+    render(<App />);
+    const numberOfEvents = screen.getByTestId("number-of-events");
+    expect(numberOfEvents).toBeInTheDocument();
+  });
 });
