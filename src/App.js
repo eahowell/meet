@@ -5,6 +5,7 @@ import CitySearch from "./components/CitySearch";
 import EventList from "./components/EventList";
 import NumberOfEvents from "./components/NumberOfEvents";
 import { getEvents, extractLocations } from "./api";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 
 const App = () => {
@@ -26,8 +27,6 @@ const App = () => {
     currentCity === "all"
       ? events
       : events.filter((event) => event.location === currentCity);
-  // console.log("Current City:", currentCity);
-  // console.log("Rendering App with events:", filteredEvents);
   return (
     <div className="App">
       <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} />

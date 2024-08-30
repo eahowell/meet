@@ -1,6 +1,8 @@
 // src/components/Event.js
 
 import { useState, useEffect } from "react";
+import ListGroup from "react-bootstrap/ListGroup";
+import { Button } from "react-bootstrap";
 
 const Event = ({ event, forceCollapse }) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -16,7 +18,7 @@ const Event = ({ event, forceCollapse }) => {
   };
 
   return (
-    <li className="event listitem">
+    <ListGroup.Item as="li" className="event listitem eventListItem">
       <h3>{event.summary}</h3>
       <p>
         <strong>Location:</strong> {event.location}
@@ -44,10 +46,11 @@ const Event = ({ event, forceCollapse }) => {
           <a href={event.htmlLink}>See details on Google Calendar</a>
         </div>
       )}
-      <button onClick={toggleDetails}>
+      <Button variant="primary" onClick={toggleDetails}>
         {showDetails ? "Hide Details" : "Show Details"}
-      </button>
-    </li>
+      </Button>
+      <br />
+    </ListGroup.Item>
   );
 };
 

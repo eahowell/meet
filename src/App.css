@@ -1,4 +1,7 @@
 .App {
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
@@ -7,10 +10,9 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
+#HeaderLogoImage {
+  height: auto;
 }
 
 .App-header {
@@ -24,15 +26,46 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.eventListItem {
+  width: 900px;
+  display: flex;
+  flex-direction: column;
+  text-align: Left;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  border: #282c34 solid 1px;
+  border-radius: 20px;
+  padding: 10px;
+  margin: 10px;
+  background-color: #A6CAEC;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.citiesListItem {
+  list-style-type: none;
+  display: block;
 }
+
+.eventList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  padding: 15px;
+}
+/* #city-search { display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  width: 50%;
+  padding: 0px 20px;
+  margin: 10px 0;
+  box-sizing: border-box;
+} */
+/* #city-search label {
+  justify-self: center;
+  width: auto;
+  padding: 10px;
+} */

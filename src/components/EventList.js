@@ -1,6 +1,8 @@
 // src/components/EventList.js
 import { useState } from "react";
 import Event from "./Event";
+import ListGroup from "react-bootstrap/ListGroup";
+import { Button } from "react-bootstrap";
 
 const EventList = ({ events }) => {
   const [allCollapsed, setAllCollapsed] = useState(false);
@@ -11,8 +13,16 @@ const EventList = ({ events }) => {
   //   console.log("Rendering EventList with events:", events);
   return (
     <div>
-      <button onClick={handleCollapseAll}>Collapse All</button>
-      <ul id="event-list" data-testid="event-list" aria-label="event list">
+      <Button variant="primary" onClick={handleCollapseAll}>
+        Collapse All
+      </Button>
+      <ListGroup
+        as="ul"
+        id="event-list"
+        data-testid="event-list"
+        aria-label="event list"
+        className="eventList"
+      >
         {events && events.length > 0
           ? events.map((event) => (
               <Event
@@ -22,7 +32,9 @@ const EventList = ({ events }) => {
               />
             ))
           : null}
-      </ul>
+      </ListGroup>
+      <br />
+      <br />
     </div>
   );
 };
