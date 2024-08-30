@@ -4,13 +4,10 @@
 import {
   render,
   screen,
-  within,
-  waitFor,
-  fireEvent,
+  within
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CitySearch from "../components/CitySearch";
-import EventList from "../components/EventList";
 import App from "../App";
 import { getEvents, extractLocations } from "../api";
 
