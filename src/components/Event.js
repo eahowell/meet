@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import { Button } from "react-bootstrap";
 
-const Event = ({ event, forceCollapse }) => {
+const Event = ({ event, forceCollapse, index }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
@@ -18,7 +18,12 @@ const Event = ({ event, forceCollapse }) => {
   };
 
   return (
-    <ListGroup.Item as="li" className="event listitem eventListItem">
+    <ListGroup.Item
+      as="li"
+      className="event listitem eventListItem"
+      aria-label="event list item"
+      data-testid={`event-${index}`}
+    >
       <h3>{event.summary}</h3>
       <p>
         <strong>Location:</strong> {event.location}

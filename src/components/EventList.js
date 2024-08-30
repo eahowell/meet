@@ -24,11 +24,12 @@ const EventList = ({ events }) => {
         className="eventList"
       >
         {events && events.length > 0
-          ? events.map((event) => (
+          ? events.map((event, index) => (
               <Event
                 key={event.id}
                 event={event}
                 forceCollapse={allCollapsed}
+                index={index}
               />
             ))
           : null}

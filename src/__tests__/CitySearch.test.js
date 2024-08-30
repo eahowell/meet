@@ -1,9 +1,16 @@
 /* eslint-disable testing-library/no-debugging-utils */
 // src/__tests__/CitySearch.test.js
 
-import { render, screen, within } from "@testing-library/react";
+import {
+  render,
+  screen,
+  within,
+  waitFor,
+  fireEvent,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CitySearch from "../components/CitySearch";
+import EventList from "../components/EventList";
 import App from "../App";
 import { getEvents, extractLocations } from "../api";
 
@@ -120,4 +127,52 @@ describe("<CitySearch /> component", () => {
     const noEventsMessage = screen.getByText(/No events found in Small Town/i);
     expect(noEventsMessage).toBeInTheDocument();
   });
+
+  test("user can type a city and then clear it by clicking the X", async () => {
+    const user = userEvent.setup();
+    const mockSetCurrentCity = jest.fn();
+    const mockAllLocations = ["New York", "Los Angeles", "Chicago"];
+    render(
+      <CitySearch
+        allLocations={mockAllLocations}
+        setCurrentCity={mockSetCurrentCity}
+      />
+    );
+
+    const searchInput = screen.getByTestId("city-search-input");
+
+    // Type "Berlin" into the search input
+    await user.type(searchInput, "Berlin, Germany");
+
+    // Click the "X" element
+    const clearSelectionElement = screen.getByTestId("clear-selection");
+    await user.click(clearSelectionElement);
+
+    // Check if setCurrentCity was called with "all"
+    expect(mockSetCurrentCity).toHaveBeenCalledWith("all");
+  });
+});
+
+test("user can type a city and click see all cities to get full list", async () => {
+  const user = userEvent.setup();
+  const mockSetCurrentCity = jest.fn();
+  const mockAllLocations = ["New York", "Los Angeles", "Chicago"];
+  render(
+    <CitySearch
+      allLocations={mockAllLocations}
+      setCurrentCity={mockSetCurrentCity}
+    />
+  );
+
+  const searchInput = screen.getByTestId("city-search-input");
+
+  // Type "Berlin" into the search input
+  await user.type(searchInput, "Berlin, Germany");
+
+  // Find and click the "See all cities" element
+  const seeAllCitiesElement = screen.getByTestId("see-all-cities");
+  await user.click(seeAllCitiesElement);
+
+  // Check if setCurrentCity was called with "all"
+  expect(mockSetCurrentCity).toHaveBeenCalledWith("all");
 });
