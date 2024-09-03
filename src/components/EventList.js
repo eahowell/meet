@@ -10,7 +10,7 @@ const EventList = ({ events }) => {
   const handleCollapseAll = () => {
     setAllCollapsed(true);
   };
-  //   console.log("Rendering EventList with events:", events);
+
   return (
     <div>
       <Button variant="primary" onClick={handleCollapseAll}>

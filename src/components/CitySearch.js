@@ -1,6 +1,6 @@
 // src/components/CitySearch.js
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Form,
   InputGroup,
@@ -14,19 +14,35 @@ import BrandImage from "../img/LightLogo.png";
 const CitySearch = ({ allLocations, setCurrentCity }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
+  // const [suggestions, setSuggestions] = useState([]);
 
+  const suggestions = useMemo(() => allLocations, [allLocations]);
+
+  // const handleInputChanged = (event) => {
+  //   const value = event.target.value;
+  //   setQuery(value);
+  //   const filteredLocations = allLocations
+  //     ? allLocations.filter((location) => {
+  //         return location.toUpperCase().indexOf(value.toUpperCase()) > -1;
+  //       })
+  //     : [];
+  //   setSuggestions(filteredLocations);
+  //   setShowSuggestions(true);
+  // };
+  
   const handleInputChanged = (event) => {
     const value = event.target.value;
     setQuery(value);
-    const filteredLocations = allLocations
-      ? allLocations.filter((location) => {
-          return location.toUpperCase().indexOf(value.toUpperCase()) > -1;
-        })
-      : [];
-    setSuggestions(filteredLocations);
     setShowSuggestions(true);
   };
+
+  const filteredSuggestions = useMemo(() => {
+    return suggestions
+      ? suggestions.filter((location) => {
+          return location.toUpperCase().indexOf(query.toUpperCase()) > -1;
+        })
+      : [];
+  }, [suggestions, query]);
 
   const handleItemClicked = (suggestion) => {
     setQuery(suggestion);
@@ -92,7 +108,7 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
             </div>
             {showSuggestions && (
               <ul className="suggestions w-100" data-testid="suggestions-list">
-                {suggestions.map((suggestion, index) => (
+                {filteredSuggestions.map((suggestion, index) => (
                   <ListGroup.Item
                     as="li"
                     className="citiesListItem"
@@ -107,6 +123,7 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
                   className="citiesListItem"
                   onClick={handleAllCitiesClicked}
                   data-testid="see-all-cities"
+                  key={"See all cities"}
                 >
                   <b>See all cities</b>
                 </li>

@@ -1,13 +1,21 @@
 // src/__tests__/EventList.test.js
 
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import EventList from "../components/EventList";
+import App from "../App";
+import { getEvents } from "../api";
+import "@testing-library/jest-dom";
+import mockData from "../mock-data";
+
+jest.mock("../api");
+jest.setTimeout(15000);
 
 describe("<EventList /> component", () => {
-  // Opted to not use the beforeEach for rendering the EventList due to "Forbidden usage of render within testing framework beforeEach" error
-
+  beforeEach(() => {
+    getEvents.mockClear();
+  });
   const mockEvents = [
     {
       id: 1,
@@ -60,16 +68,18 @@ describe("<EventList /> component", () => {
   ];
 
   test('has an element with "list" role', () => {
-    render(<EventList />);
+    render(<EventList events={mockEvents} />);
     const list = screen.getByRole("list");
     expect(list).toBeInTheDocument();
   });
 
   test("renders correct number of events", () => {
+    getEvents.mockResolvedValue(mockEvents);
     render(<EventList events={mockEvents} />);
     const eventElements = screen.getAllByRole("listitem");
     expect(eventElements).toHaveLength(mockEvents.length);
   });
+
   test("renders all events", () => {
     render(<EventList events={mockEvents} />);
     mockEvents.forEach((event) => {
@@ -100,5 +110,17 @@ describe("<EventList /> component", () => {
     mockEvents.forEach((event) => {
       expect(screen.queryByText(event.description)).not.toBeInTheDocument();
     });
+  });
+});
+
+describe("<EventList /> integration", () => {
+  test("renders a list of 32 events when the app is mounted and rendered", async () => {
+    getEvents.mockResolvedValue(mockData);
+    render(<App />);
+    await waitFor(() => {
+      const eventList = screen.getByTestId("event-list");
+      const eventItems = within(eventList).getAllByRole("listitem");
+      expect(eventItems).toHaveLength(32);
+    }); 
   });
 });

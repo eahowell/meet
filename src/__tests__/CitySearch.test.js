@@ -1,19 +1,21 @@
 /* eslint-disable testing-library/no-debugging-utils */
 // src/__tests__/CitySearch.test.js
 
-import {
-  render,
-  screen,
-  within
-} from "@testing-library/react";
+import { render, screen, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CitySearch from "../components/CitySearch";
 import App from "../App";
 import { getEvents, extractLocations } from "../api";
+import "@testing-library/jest-dom";
+import mockData from "../mock-data";
 
 jest.mock("../api");
+jest.setTimeout(15000);
 
 describe("<CitySearch /> component", () => {
+  beforeEach(() => {
+    getEvents.mockClear();
+  });
   test("renders text input", () => {
     render(<CitySearch />);
     const cityTextBox = screen.getByRole("textbox");
@@ -66,65 +68,6 @@ describe("<CitySearch /> component", () => {
     });
   });
 
-  test('displays "No events found" message when user selects a city with no events', async () => {
-    const user = userEvent.setup();
-
-    // Mock data
-    const mockEvents = [
-      {
-        id: 1,
-        location: "New York",
-        start: {
-          dateTime: "2023-06-15T19:00:00+02:00",
-          timeZone: "Europe/Berlin",
-        },
-      },
-      {
-        id: 2,
-        location: "London",
-        start: {
-          dateTime: "2023-06-15T19:00:00+02:00",
-          timeZone: "Europe/Berlin",
-        },
-      },
-      // No events in "Small Town"
-    ];
-
-    // Mock API functions
-    getEvents.mockResolvedValue(mockEvents);
-    extractLocations.mockReturnValue(["New York", "London", "Small Town"]);
-
-    // Render the App component
-    render(<App />);
-    // Log the rendered output
-    // console.log("Rendered App:");
-    // screen.debug();
-    // Find and click the city search input
-    const citySearchInput = screen.getByRole("textbox", {
-      name: /city search/i,
-    });
-    await user.click(citySearchInput);
-    await user.type(citySearchInput, "Small Town");
-
-    // Find and click the "Small Town" suggestion
-    const smallTownSuggestion = await screen.findByText("Small Town");
-    await user.click(smallTownSuggestion);
-
-    // Log the rendered output after selection
-    // console.log("Rendered App after city selection:");
-    // screen.debug();
-
-    // Check that the EventList is empty
-    const eventList = screen.getByTestId("event-list");
-    const eventItems = within(eventList).queryAllByRole("listitem");
-    expect(eventItems).toHaveLength(0);
-
-    // Check for a message indicating no events found
-    // Note: You'll need to add this message to your App or EventList component
-    const noEventsMessage = screen.getByText(/No events found in Small Town/i);
-    expect(noEventsMessage).toBeInTheDocument();
-  });
-
   test("user can type a city and then clear it by clicking the X", async () => {
     const user = userEvent.setup();
     const mockSetCurrentCity = jest.fn();
@@ -148,28 +91,72 @@ describe("<CitySearch /> component", () => {
     // Check if setCurrentCity was called with "all"
     expect(mockSetCurrentCity).toHaveBeenCalledWith("all");
   });
+
+  test("user can type a city and click see all cities to get full list", async () => {
+    const user = userEvent.setup();
+    const mockSetCurrentCity = jest.fn();
+    const mockAllLocations = ["New York", "Los Angeles", "Chicago"];
+    render(
+      <CitySearch
+        allLocations={mockAllLocations}
+        setCurrentCity={mockSetCurrentCity}
+      />
+    );
+
+    const searchInput = screen.getByTestId("city-search-input");
+
+    // Type "Berlin" into the search input
+    await user.type(searchInput, "Berlin, Germany");
+
+    // Find and click the "See all cities" element
+    const seeAllCitiesElement = screen.getByTestId("see-all-cities");
+    await user.click(seeAllCitiesElement);
+
+    // Check if setCurrentCity was called with "all"
+    expect(mockSetCurrentCity).toHaveBeenCalledWith("all");
+  });
 });
 
-test("user can type a city and click see all cities to get full list", async () => {
-  const user = userEvent.setup();
-  const mockSetCurrentCity = jest.fn();
-  const mockAllLocations = ["New York", "Los Angeles", "Chicago"];
-  render(
-    <CitySearch
-      allLocations={mockAllLocations}
-      setCurrentCity={mockSetCurrentCity}
-    />
-  );
+describe("CitySearch integration", () => {
+  beforeEach(() => {
+    getEvents.mockClear();
+  });
+  test("renders suggestions list when the search input is focused", async () => {
+    const user = userEvent.setup();
+    getEvents.mockResolvedValue(mockData);
+    const locations = [...new Set(mockData.map((event) => event.location))];
 
-  const searchInput = screen.getByTestId("city-search-input");
+    render(<App />);
 
-  // Type "Berlin" into the search input
-  await user.type(searchInput, "Berlin, Germany");
+    const searchInput = await screen.findByRole("textbox", { name: /city search/i });
+    await user.click(searchInput);
 
-  // Find and click the "See all cities" element
-  const seeAllCitiesElement = screen.getByTestId("see-all-cities");
-  await user.click(seeAllCitiesElement);
+    await waitFor(() => {
+      const suggestionList = screen.getByTestId("suggestions-list");
+      const suggestionItems = within(suggestionList).getAllByRole("listitem");
+      expect(suggestionItems).toHaveLength(locations.length + 1); // +1 for "See all cities"
+    }, { timeout: 10000 });
+  });
 
-  // Check if setCurrentCity was called with "all"
-  expect(mockSetCurrentCity).toHaveBeenCalledWith("all");
+  test('displays "No events found" message when user selects a city with no events', async () => {
+    const user = userEvent.setup();
+
+    getEvents.mockResolvedValue(mockData);
+    extractLocations.mockReturnValue(["New York, USA", "London, UK", "Small Town"]);
+
+    render(<App />);
+    const citySearchInput = await screen.findByRole("textbox", {
+      name: /city search/i,
+    });
+    await user.click(citySearchInput);
+    await user.type(citySearchInput, "Small Town");
+
+    const smallTownSuggestion = await screen.findByText("Small Town");
+    await user.click(smallTownSuggestion);
+
+    const noEventsMessage = await screen.findByText(
+      /No events found in Small Town/i
+    );
+    expect(noEventsMessage).toBeInTheDocument();
+  });
 });

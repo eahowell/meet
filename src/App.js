@@ -1,45 +1,49 @@
 // src/App.js
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import CitySearch from "./components/CitySearch";
 import EventList from "./components/EventList";
 import NumberOfEvents from "./components/NumberOfEvents";
 import { getEvents, extractLocations } from "./api";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 const App = () => {
   const [events, setEvents] = useState([]);
   const [allLocations, setAllLocations] = useState([]);
   const [currentCity, setCurrentCity] = useState("all");
+  const [currentNOE, setCurrentNOE] = useState(32);
+
+  const fetchData = useCallback(async () => {
+    // console.log("Fetching data...");
+    const allEvents = await getEvents();
+    // console.log("Fetched events:", allEvents);
+    if (allEvents) {
+      const filteredEvents =
+        currentCity === "all"
+          ? allEvents
+          : allEvents.filter((event) => event.location === currentCity);
+      setEvents(filteredEvents.slice(0, currentNOE));
+      setAllLocations(extractLocations(allEvents));
+    } else {
+      setEvents([]);
+      setAllLocations([]);
+    }
+  }, [currentCity, currentNOE]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
-  const fetchData = async () => {
-    const allEvents = await getEvents();
-    setEvents(allEvents);
-    setAllLocations(extractLocations(allEvents));
-  };
-
-  const filteredEvents =
-    currentCity === "all"
-      ? events
-      : events.filter((event) => event.location === currentCity);
   return (
     <div className="App">
       <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} />
       <br />
-      <NumberOfEvents />
+      <NumberOfEvents setCurrentNOE={setCurrentNOE} />
       <br />
-      {filteredEvents.length === 0 ? (
-        <ul id="event-list" data-testid="event-list" aria-label="event list">
-          <p>No events found in {currentCity}</p>
-        </ul>
-      ) : (
-        <EventList events={filteredEvents} />
-      )}
+
+      {events.length === 0 ? <p>No events found in {currentCity}</p> : null}
+      <EventList events={events} />
     </div>
   );
 };

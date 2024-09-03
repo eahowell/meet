@@ -21,7 +21,7 @@ const Event = ({ event, forceCollapse, index }) => {
     <ListGroup.Item
       as="li"
       className="event listitem eventListItem"
-      aria-label="event list item"
+      aria-label="event listitem"
       data-testid={`event-${index}`}
     >
       <h3>{event.summary}</h3>
