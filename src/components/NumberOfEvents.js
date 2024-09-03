@@ -1,13 +1,14 @@
 // src/components/NumberOfEvents.js
 import { useState } from "react";
 
-const NumberOfEvents = () => {
+const NumberOfEvents = ({setCurrentNOE}) => {
   const [inputValue, setInputValue] = useState("32");
 
   const handleInputChanged = (event) => {
     const value = event.target.value;
     // const numberValue = Math.abs(Math.round(Number(value)));
     setInputValue(value);
+    setCurrentNOE(Number(value));  // Update the NOE in the parent component
   };
 
   return (
