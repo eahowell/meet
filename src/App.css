@@ -26,6 +26,8 @@
   color: white;
 }
 
+
+
 .eventListItem {
   width: 900px;
   display: flex;
@@ -54,18 +56,9 @@
   justify-items: center;
   padding: 15px;
 }
-/* #city-search { display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  justify-items: center;
-  width: 50%;
-  padding: 0px 20px;
-  margin: 10px 0;
-  box-sizing: border-box;
-} */
-/* #city-search label {
-  justify-self: center;
-  width: auto;
-  padding: 10px;
-} */
+
+#indexNumber {
+  font-size: 10px;
+  margin: 0;
+  padding: 0;
+}

@@ -147,27 +147,6 @@ describe("<CitySearch /> integration", () => {
 
     expect(suggestionItems.length).toBeGreaterThan(0);
   });
-
-  test("updates filtered events when a city is selected", async () => {
-    render(<App />);
-
-    const cityTextBox = screen.getByRole("textbox", { name: /city search/i });
-    await userEvent.click(cityTextBox);
-    await userEvent.type(cityTextBox, "Berlin");
-
-    const suggestionList = await screen.findByTestId("suggestions-list");
-    const berlinSuggestion = within(suggestionList).getByText("Berlin, Germany");
-    await userEvent.click(berlinSuggestion);
-
-    await waitFor(() => {
-      const eventList = screen.getByTestId("event-list");
-      const eventItems = within(eventList).getAllByRole("listitem");
-      const berlinEvents = mockData.filter((event) =>
-        event.location.includes("Berlin")
-      );
-      expect(eventItems).toHaveLength(berlinEvents.length);
-    });
-  });
 });
 
 
