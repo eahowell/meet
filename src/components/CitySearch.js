@@ -16,11 +16,13 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
   const [query, setQuery] = useState("");
 
   const suggestions = useMemo(() => {
-    return allLocations ? allLocations.filter((location) => {
-      return location.toUpperCase().indexOf(query.toUpperCase()) > -1;
-    }) : [];
+    return allLocations
+      ? allLocations.filter((location) => {
+          return location.toUpperCase().indexOf(query.toUpperCase()) > -1;
+        })
+      : [];
   }, [allLocations, query]);
-  
+
   const handleInputChanged = (event) => {
     const value = event.target.value;
     setQuery(value);

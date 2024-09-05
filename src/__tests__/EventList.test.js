@@ -10,7 +10,6 @@ import "@testing-library/jest-dom";
 import mockData from "../mock-data";
 
 jest.mock("../api");
-jest.setTimeout(15000);
 
 describe("<EventList /> component", () => {
   beforeEach(() => {
@@ -121,6 +120,6 @@ describe("<EventList /> integration", () => {
       const eventList = screen.getByTestId("event-list");
       const eventItems = within(eventList).getAllByRole("listitem");
       expect(eventItems).toHaveLength(32);
-    }); 
+    });
   });
 });

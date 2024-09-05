@@ -6,7 +6,6 @@ import { getEvents } from "../api";
 import mockData from "../mock-data";
 
 jest.mock("../api");
-jest.setTimeout(15000);
 
 describe("<App /> component", () => {
   beforeEach(() => {

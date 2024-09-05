@@ -24,4 +24,3 @@ export const getEvents = async () => {
   return mockData;
 };
 
-console.log("api.js loaded, extractLocations:", extractLocations);

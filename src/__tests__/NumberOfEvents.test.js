@@ -11,7 +11,6 @@ import "@testing-library/jest-dom";
 import mockData from "../mock-data";
 
 jest.mock("../api");
-jest.setTimeout(15000);
 const setCurrentNOE = jest.fn();
 
 describe("<NumberOfEvents /> component", () => {
@@ -29,7 +28,7 @@ describe("<NumberOfEvents /> component", () => {
   });
 
   test("updates value when user types a valid number", async () => {
-    render(<NumberOfEvents setCurrentNOE={setCurrentNOE}/>);
+    render(<NumberOfEvents setCurrentNOE={setCurrentNOE} />);
     const numberInput = screen.getByLabelText("Number of Events");
     const user = userEvent.setup();
     await user.clear(numberInput);
@@ -55,11 +54,11 @@ describe("<NumberOfEvents /> integration", () => {
   test("changes the number of events displayed when NOE input changes", async () => {
     getEvents.mockResolvedValue(mockData);
     render(<App />);
-    
+
     const noeInput = screen.getByLabelText("Number of Events");
     await userEvent.clear(noeInput);
     await userEvent.type(noeInput, "10");
-  
+
     await waitFor(() => {
       const eventListItems = screen.getAllByRole("listitem");
       expect(eventListItems).toHaveLength(Math.min(10, mockData.length));
