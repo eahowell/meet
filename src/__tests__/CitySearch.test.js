@@ -147,6 +147,23 @@ describe("<CitySearch /> integration", () => {
 
     expect(suggestionItems.length).toBeGreaterThan(0);
   });
+
+    test('displays "No events found" message when user selects a city with no events', async () => {
+
+      render(<App />);
+
+    const cityTextBox = screen.getByRole("textbox", { name: /city search/i });
+    await userEvent.click(cityTextBox);
+    await userEvent.type(cityTextBox, "Small Town");
+
+    const suggestionList = screen.getByTestId("suggestions-list");
+    const suggestionItems = within(suggestionList).getAllByRole("listitem");
+
+    expect(suggestionItems.length).toBe(1);
+    expect(suggestionItems[0]).toHaveTextContent("See all cities");
+  });
+
+  
 });
 
 
