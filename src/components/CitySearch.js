@@ -14,35 +14,18 @@ import BrandImage from "../img/LightLogo.png";
 const CitySearch = ({ allLocations, setCurrentCity }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [query, setQuery] = useState("");
-  // const [suggestions, setSuggestions] = useState([]);
 
-  const suggestions = useMemo(() => allLocations, [allLocations]);
-
-  // const handleInputChanged = (event) => {
-  //   const value = event.target.value;
-  //   setQuery(value);
-  //   const filteredLocations = allLocations
-  //     ? allLocations.filter((location) => {
-  //         return location.toUpperCase().indexOf(value.toUpperCase()) > -1;
-  //       })
-  //     : [];
-  //   setSuggestions(filteredLocations);
-  //   setShowSuggestions(true);
-  // };
+  const suggestions = useMemo(() => {
+    return allLocations ? allLocations.filter((location) => {
+      return location.toUpperCase().indexOf(query.toUpperCase()) > -1;
+    }) : [];
+  }, [allLocations, query]);
   
   const handleInputChanged = (event) => {
     const value = event.target.value;
     setQuery(value);
     setShowSuggestions(true);
   };
-
-  const filteredSuggestions = useMemo(() => {
-    return suggestions
-      ? suggestions.filter((location) => {
-          return location.toUpperCase().indexOf(query.toUpperCase()) > -1;
-        })
-      : [];
-  }, [suggestions, query]);
 
   const handleItemClicked = (suggestion) => {
     setQuery(suggestion);
@@ -107,27 +90,35 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
               />
             </div>
             {showSuggestions && (
-              <ul className="suggestions w-100" data-testid="suggestions-list">
-                {filteredSuggestions.map((suggestion, index) => (
+              <ListGroup
+                as="ul"
+                className="suggestions w-100"
+                data-testid="suggestions-list"
+                aria-label="suggestions-list"
+              >
+                {suggestions.map((suggestion, index) => (
                   <ListGroup.Item
                     as="li"
                     className="citiesListItem"
                     onClick={() => handleItemClicked(suggestion)}
                     key={suggestion}
+                    aria-label="listitem"
                     data-testid={`suggestion-${index}`}
                   >
                     {suggestion}
                   </ListGroup.Item>
                 ))}
-                <li
+                <ListGroup.Item
+                  as="li"
                   className="citiesListItem"
                   onClick={handleAllCitiesClicked}
+                  aria-label="listitem"
                   data-testid="see-all-cities"
                   key={"See all cities"}
                 >
                   <b>See all cities</b>
-                </li>
-              </ul>
+                </ListGroup.Item>
+              </ListGroup>
             )}
           </InputGroup>
         </Form>

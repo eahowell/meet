@@ -11,23 +11,25 @@ import "@testing-library/jest-dom";
 import mockData from "../mock-data";
 
 jest.mock("../api");
+jest.setTimeout(15000);
+const setCurrentNOE = jest.fn();
 
 describe("<NumberOfEvents /> component", () => {
   test("contains an element with the role of the textbox", () => {
-    render(<NumberOfEvents />);
+    render(<NumberOfEvents setCurrentNOE={setCurrentNOE} />);
     const numberInput = screen.getByRole("textbox");
     expect(numberInput).toBeInTheDocument();
   });
 
   test("renders number input with default value of 32", () => {
-    render(<NumberOfEvents />);
+    render(<NumberOfEvents setCurrentNOE={setCurrentNOE} />);
     const numberInput = screen.getByLabelText("Number of Events");
     expect(numberInput).toBeInTheDocument();
     expect(numberInput).toHaveValue("32");
   });
 
   test("updates value when user types a valid number", async () => {
-    render(<NumberOfEvents />);
+    render(<NumberOfEvents setCurrentNOE={setCurrentNOE}/>);
     const numberInput = screen.getByLabelText("Number of Events");
     const user = userEvent.setup();
     await user.clear(numberInput);

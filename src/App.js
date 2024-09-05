@@ -14,10 +14,12 @@ const App = () => {
   const [currentCity, setCurrentCity] = useState("all");
   const [currentNOE, setCurrentNOE] = useState(32);
 
-  const fetchData = useCallback(async () => {
-    // console.log("Fetching data...");
+  useEffect(() => {
+    fetchData();
+  }, [currentCity, currentNOE]);
+
+  const fetchData = async () => {
     const allEvents = await getEvents();
-    // console.log("Fetched events:", allEvents);
     if (allEvents) {
       const filteredEvents =
         currentCity === "all"
@@ -29,15 +31,36 @@ const App = () => {
       setEvents([]);
       setAllLocations([]);
     }
-  }, [currentCity, currentNOE]);
+  };
+  // const [events, setEvents] = useState([]);
+  // const [allLocations, setAllLocations] = useState([]);
+  // const [currentCity, setCurrentCity] = useState("all");
+  // const [currentNOE, setCurrentNOE] = useState(32);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  // const fetchData = useCallback(async () => {
+  //   // console.log("Fetching data...");
+  //   const allEvents = await getEvents();
+  //   // console.log("Fetched events:", allEvents);
+  //   if (allEvents) {
+  //     const filteredEvents =
+  //       currentCity === "all"
+  //         ? allEvents
+  //         : allEvents.filter((event) => event.location === currentCity);
+  //     setEvents(filteredEvents.slice(0, currentNOE));
+  //     setAllLocations(extractLocations(allEvents));
+  //   } else {
+  //     setEvents([]);
+  //     setAllLocations([]);
+  //   }
+  // }, [currentCity, currentNOE]);
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, [fetchData]);
 
   return (
     <div className="App">
-      <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} />
+       <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} />
       <br />
       <NumberOfEvents setCurrentNOE={setCurrentNOE} />
       <br />
