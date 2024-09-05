@@ -15,11 +15,10 @@ describe("<CitySearch /> component", () => {
   
   beforeEach(() => {
     jest.clearAllMocks();
-    console.log("mockData:", mockData);
-    mockAllLocations = extractLocations(mockData);
-    console.log("extractLocations function:", extractLocations);
-    console.log("Before each - mockAllLocations:", mockAllLocations);
+    mockAllLocations = ["Berlin, Germany", "London, UK", "New York, NY, USA", "Tokyo, Japan", "Mumbai, Maharashtra, India", "Nairobi, Kenya", "Santiago, Santiago Metropolitan Region, Chile"];
+    extractLocations.mockReturnValue(mockAllLocations);
     getEvents.mockResolvedValue(mockData);
+    console.log("Before each - mockAllLocations:", mockAllLocations);
   });
 
   const mockSetCurrentCity = jest.fn();
@@ -63,18 +62,14 @@ describe("<CitySearch /> component", () => {
     console.log("Test - mockAllLocations:", mockAllLocations);
     console.log("Test - suggestionItems:", suggestionItems.map(item => item.textContent));
 
-    if (mockAllLocations) {
-      const filteredLocations = mockAllLocations.filter((location) =>
-        location.toUpperCase().includes("BERLIN")
-      );
+    const filteredLocations = mockAllLocations.filter((location) =>
+      location.toUpperCase().includes("BERLIN")
+    );
 
-      expect(suggestionItems.length).toBe(filteredLocations.length + 1); // +1 for "See all cities"
-      filteredLocations.forEach((location, index) => {
-        expect(suggestionItems[index]).toHaveTextContent(location);
-      });
-    } else {
-      console.error("mockAllLocations is undefined");
-    }
+    expect(suggestionItems.length).toBe(filteredLocations.length + 1); // +1 for "See all cities"
+    filteredLocations.forEach((location, index) => {
+      expect(suggestionItems[index]).toHaveTextContent(location);
+    });
   });
 
   test("user can select a city from the list of suggestions", async () => {
@@ -98,8 +93,8 @@ describe("<CitySearch /> component", () => {
     
     await userEvent.click(berlinSuggestion);
 
-    expect(mockSetCurrentCity).toHaveBeenCalledWith(expect.stringContaining("Berlin"));
-    expect(cityTextBox).toHaveValue(expect.stringContaining("Berlin"));
+    expect(mockSetCurrentCity).toHaveBeenCalledWith("Berlin, Germany");
+    expect(cityTextBox).toHaveValue("Berlin, Germany");
     expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
   });
 });
@@ -107,6 +102,8 @@ describe("<CitySearch /> component", () => {
 describe("<CitySearch /> integration", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    const mockAllLocations = ["Berlin, Germany", "London, UK", "New York, NY, USA", "Tokyo, Japan", "Mumbai, Maharashtra, India", "Nairobi, Kenya", "Santiago, Santiago Metropolitan Region, Chile"];
+    extractLocations.mockReturnValue(mockAllLocations);
     getEvents.mockResolvedValue(mockData);
   });
 
