@@ -41,6 +41,11 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
     setCurrentCity("all");
   };
 
+  const handleBlur = (event) => {
+    // Delay hiding suggestions to allow for click events on suggestions
+    setTimeout(() => setShowSuggestions(false), 200);
+  };
+
   return (
     <Navbar className="bg-body-tertiary">
       <Container fluid className="d-flex flex-column align-items-center">
@@ -81,6 +86,7 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
                 onChange={handleInputChanged}
                 placeholder="Search for a city"
                 onFocus={() => setShowSuggestions(true)}
+                onBlur={handleBlur}
                 data-testid="city-search-input"
               />
 
