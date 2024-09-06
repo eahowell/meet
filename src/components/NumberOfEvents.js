@@ -19,7 +19,7 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
   return (
     <Row className=" align-items-center justify-content-center w-100">
       <Col xs="auto">
-      {/* <Form> */}
+        {/* <Form> */}
         <InputGroup
           id="number-of-events"
           data-testid="number-of-events"
@@ -29,7 +29,7 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
             Number of Events:
           </Form.Label>
           <Form.Control
-          id = "number-of-events"
+            id="number-of-events"
             type="text"
             className="number-of-events mb-2"
             aria-label="Number of Events"
@@ -40,8 +40,13 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
             placeholder="Enter number of events"
             min="1"
           />
-          
-            <i className="bi bi-arrow-clockwise buttonReset" onClick={handleClear} alt="Reset number of events"  style={{ fontSize: "2rem", color: "cornflowerblue" }}></i> {/* Reset icon */}
+          <i
+            className="bi bi-arrow-clockwise buttonReset"
+            onClick={handleClear}
+            role="img"
+            aria-label="Reset number of events"
+            style={{ fontSize: "2rem", color: "cornflowerblue" }}
+          />
         </InputGroup>
         {/* </Form> */}
       </Col>

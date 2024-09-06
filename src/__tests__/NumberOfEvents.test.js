@@ -36,6 +36,41 @@ describe("<NumberOfEvents /> component", () => {
     expect(numberInput).toHaveValue("15");
   });
 
+  test("handleClear resets input value to 32", async () => {
+    const setCurrentNOE = jest.fn();
+    render(<NumberOfEvents setCurrentNOE={setCurrentNOE} />);
+
+    const numberInput = screen.getByLabelText("Number of Events");
+    const resetButton = screen.getByRole("img", {
+      name: /reset number of events/i,
+    });
+
+    // Change the input value
+    await userEvent.clear(numberInput);
+    await userEvent.type(numberInput, "10");
+    expect(numberInput).toHaveValue("10");
+    expect(setCurrentNOE).toHaveBeenCalledWith(10);
+
+    // Reset the input value
+    await userEvent.click(resetButton);
+
+    expect(numberInput).toHaveValue("32");
+    expect(setCurrentNOE).toHaveBeenCalledWith(32);
+  });
+
+  test("handleClear is called when reset icon is clicked", async () => {
+    const setCurrentNOE = jest.fn();
+    render(<NumberOfEvents setCurrentNOE={setCurrentNOE} />);
+
+    const resetButton = screen.getByRole("img", {
+      name: /reset number of events/i,
+    });
+
+    await userEvent.click(resetButton);
+
+    expect(setCurrentNOE).toHaveBeenCalledWith(32);
+  });
+
   // test("rounds decimal input to the nearest integer", async () => {
   //   render(<NumberOfEvents />);
   //   const numberInput = screen.getByLabelText("Number of Events");
