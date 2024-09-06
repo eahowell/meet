@@ -4,12 +4,9 @@ import React, { useState, useMemo } from "react";
 import {
   Form,
   InputGroup,
-  Navbar,
-  Container,
   ListGroup,
   CloseButton,
 } from "react-bootstrap";
-import BrandImage from "../img/LightLogo.png";
 
 const CitySearch = ({ allLocations, setCurrentCity }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -47,18 +44,6 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
   };
 
   return (
-    <Navbar className="bg-body-tertiary">
-      <Container fluid className="d-flex flex-column align-items-center">
-        <Navbar.Brand href="#" className="mb-3">
-          <img
-            id="HeaderLogoImage"
-            src={BrandImage}
-            width="350"
-            height="50"
-            alt="Logo for CliqueUP"
-            className="page-header__item img-fluid"
-          />
-        </Navbar.Brand>
         <Form
           id="city-search"
           data-testid="city-search"
@@ -71,7 +56,7 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
             <Form.Label
               htmlFor="city"
               size="lg"
-              className="w-100 text-center mb-2"
+              className="w-100 text-center mb-2 labelCity"
             >
               City Search:{" "}
             </Form.Label>
@@ -89,13 +74,14 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
                 onBlur={handleBlur}
                 data-testid="city-search-input"
               />
-
-              <CloseButton
-                className="position-absolute top-50 end-0 translate-middle-y pe-3"
-                onClick={handleAllCitiesClicked}
-                aria-label="Clear selection"
-                data-testid="clear-selection"
-              />
+              {query && (
+                <CloseButton
+                  className="buttonClear position-absolute top-50 end-0 translate-middle-y pe-3"
+                  onClick={handleAllCitiesClicked}
+                  aria-label="Clear selection"
+                  data-testid="clear-selection"
+                />
+              )}
             </div>
             {showSuggestions && (
               <ListGroup
@@ -112,6 +98,7 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
                     key={suggestion}
                     aria-label="listitem"
                     data-testid={`suggestion-${index}`}
+                    action variant="dark"
                   >
                     {suggestion}
                   </ListGroup.Item>
@@ -123,6 +110,7 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
                   aria-label="listitem"
                   data-testid="see-all-cities"
                   key={"See all cities"}
+                  action variant="dark"
                 >
                   <b>See all cities</b>
                 </ListGroup.Item>
@@ -130,8 +118,6 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
             )}
           </InputGroup>
         </Form>
-      </Container>
-    </Navbar>
   );
 };
 

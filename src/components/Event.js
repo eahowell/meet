@@ -49,15 +49,16 @@ const Event = ({ event, forceCollapse, index }) => {
           <p>
             <strong>Organizer:</strong> {event.organizer.email}
           </p>
-          <a href={event.htmlLink}>See details on Google Calendar</a>
+          <Button variant="success"
+          href={event.htmlLink} target="blank">See details on Google Calendar
+          </Button>
         </div>
       )}
       <Button variant="primary" onClick={toggleDetails}>
         {showDetails ? "Hide Details" : "Show Details"}
       </Button>
-      <br />
       {/* FIXME: Remove after development */}
-      <p id="indexNumber">{index + 1 || "XX"}</p>
+      <p id="indexNumber" >{index + 1 || "XX"}</p>
     </ListGroup.Item>
   );
 };

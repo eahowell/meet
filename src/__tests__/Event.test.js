@@ -56,7 +56,7 @@ describe("<Event /> component", () => {
 
     expect(screen.getByText(mockEvent.description)).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: "See details on Google Calendar" })
+      screen.getByRole("button", { name: "See details on Google Calendar" })
     ).toHaveAttribute("href", mockEvent.htmlLink);
     expect(screen.getByText(mockEvent.organizer.email)).toBeInTheDocument();
   });

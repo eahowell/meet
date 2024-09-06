@@ -1,8 +1,14 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:500);
 .App {
   /* display: flex; */
   justify-content: center;
   align-items: center;
   text-align: center;
+  background-color: #1B1B1D;
+}
+
+.App * {
+  box-sizing: border-box;
 }
 
 .App-logo {
@@ -16,7 +22,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #4e6ba5;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -46,6 +52,7 @@
 .citiesListItem {
   list-style-type: none;
   display: block;
+  cursor: pointer;
 }
 
 .eventList {
@@ -61,4 +68,33 @@
   font-size: 10px;
   margin: 0;
   padding: 0;
+}
+
+
+.buttonClear {
+  border: none;
+  border-radius: 5px;
+  padding-right: 15px;
+  cursor: pointer;
+}
+.buttonReset {
+  border: none;
+  border-radius: 5px;
+  padding-left: 5px;
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+}
+.city{
+  padding: 5px;
+}
+
+.labelNOE{
+  padding-right: 5px;
+  color: white;
+}
+.labelCity{
+  color: white;
 }
