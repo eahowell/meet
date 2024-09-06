@@ -9,12 +9,12 @@ import mockData from "../mock-data";
 
 jest.mock("../api", () => ({
   getEvents: jest.fn(),
-  extractLocations: jest.requireActual("../api").extractLocations
+  extractLocations: jest.requireActual("../api").extractLocations,
 }));
 
 describe("<CitySearch /> component", () => {
   let allLocations;
-  
+
   beforeEach(() => {
     allLocations = extractLocations(mockData);
     getEvents.mockResolvedValue(mockData);
@@ -88,19 +88,25 @@ describe("<CitySearch /> component", () => {
   });
 
   test("user can select a city from the list of suggestions", async () => {
-    render(<CitySearch allLocations={allLocations} setCurrentCity={mockSetCurrentCity} />);
+    render(
+      <CitySearch
+        allLocations={allLocations}
+        setCurrentCity={mockSetCurrentCity}
+      />
+    );
     const cityTextBox = screen.getByRole("textbox");
     await userEvent.click(cityTextBox);
     await userEvent.type(cityTextBox, "Berlin");
-    
+
     const suggestionList = await screen.findByTestId("suggestions-list");
-    const berlinSuggestion = within(suggestionList).getByText("Berlin, Germany");
-    
+    const berlinSuggestion =
+      within(suggestionList).getByText("Berlin, Germany");
+
     await userEvent.click(berlinSuggestion);
 
     expect(mockSetCurrentCity).toHaveBeenCalledWith("Berlin, Germany");
     expect(cityTextBox).toHaveValue("Berlin, Germany");
-    
+
     // Wait for the suggestions to disappear
     await waitFor(() => {
       expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
@@ -108,17 +114,67 @@ describe("<CitySearch /> component", () => {
   });
 
   test("suggestions list closes when input loses focus", async () => {
-    render(<CitySearch allLocations={allLocations} setCurrentCity={mockSetCurrentCity} />);
+    render(
+      <CitySearch
+        allLocations={allLocations}
+        setCurrentCity={mockSetCurrentCity}
+      />
+    );
     const cityTextBox = screen.getByRole("textbox");
     await userEvent.click(cityTextBox);
     await userEvent.type(cityTextBox, "Berlin");
-    
+
     const suggestionList = await screen.findByTestId("suggestions-list");
     expect(suggestionList).toBeInTheDocument();
 
     await userEvent.tab(); // Move focus away from the input
 
     // Wait for the suggestions to disappear
+    await waitFor(() => {
+      expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
+    });
+  });
+
+  test("handleAllCitiesClicked resets query and sets current city to all when 'See all cities' is clicked", async () => {
+    render(
+      <CitySearch
+        allLocations={allLocations}
+        setCurrentCity={mockSetCurrentCity}
+      />
+    );
+    const cityTextBox = screen.getByRole("textbox");
+
+    await userEvent.type(cityTextBox, "Berlin");
+
+    const seeAllCitiesButton = screen.getByTestId("see-all-cities");
+    await userEvent.click(seeAllCitiesButton);
+
+    expect(cityTextBox).toHaveValue("");
+
+    expect(mockSetCurrentCity).toHaveBeenCalledWith("all");
+
+    await waitFor(() => {
+      expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
+    });
+  });
+
+  test("handleAllCitiesClicked resets query and sets current city to all when clear button is clicked", async () => {
+    render(
+      <CitySearch
+        allLocations={allLocations}
+        setCurrentCity={mockSetCurrentCity}
+      />
+    );
+    const cityTextBox = screen.getByRole("textbox");
+    await userEvent.type(cityTextBox, "Berlin");
+
+    const clearButton = screen.getByTestId("clear-selection");
+    await userEvent.click(clearButton);
+
+    expect(cityTextBox).toHaveValue("");
+
+    expect(mockSetCurrentCity).toHaveBeenCalledWith("all");
+
     await waitFor(() => {
       expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
     });
@@ -148,9 +204,8 @@ describe("<CitySearch /> integration", () => {
     expect(suggestionItems.length).toBeGreaterThan(0);
   });
 
-    test('displays "No events found" message when user selects a city with no events', async () => {
-
-      render(<App />);
+  test('displays "No events found" message when user selects a city with no events', async () => {
+    render(<App />);
 
     const cityTextBox = screen.getByRole("textbox", { name: /city search/i });
     await userEvent.click(cityTextBox);
@@ -162,8 +217,4 @@ describe("<CitySearch /> integration", () => {
     expect(suggestionItems.length).toBe(1);
     expect(suggestionItems[0]).toHaveTextContent("See all cities");
   });
-
-  
 });
-
-
