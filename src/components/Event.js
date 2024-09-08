@@ -41,7 +41,7 @@ const Event = ({ event, forceCollapse, index }) => {
         })}
       </p>
       {showDetails && (
-        <div className="event-details">
+        <div className="event-details details">
           <h4>About the Event</h4>
           <p>
             <strong>Description:</strong> {event.description}
