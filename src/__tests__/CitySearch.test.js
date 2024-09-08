@@ -68,13 +68,8 @@ describe("<CitySearch /> component", () => {
     const cityTextBox = screen.getByRole("textbox");
     await userEvent.type(cityTextBox, "Berlin");
 
-    // Wait for suggestions to appear
-    await waitFor(() => {
-      const suggestionList = screen.getByTestId("suggestions-list");
-      expect(suggestionList).toBeInTheDocument();
-    });
-
     const suggestionList = screen.getByTestId("suggestions-list");
+    expect(suggestionList).toBeInTheDocument();
     const suggestionItems = within(suggestionList).getAllByRole("listitem");
 
     const filteredLocations = allLocations.filter((location) =>
@@ -193,12 +188,8 @@ describe("<CitySearch /> integration", () => {
     await userEvent.click(cityTextBox);
 
     // Wait for suggestions to appear
-    await waitFor(() => {
-      const suggestionList = screen.getByTestId("suggestions-list");
-      expect(suggestionList).toBeInTheDocument();
-    });
-
     const suggestionList = screen.getByTestId("suggestions-list");
+    expect(suggestionList).toBeInTheDocument();
     const suggestionItems = within(suggestionList).getAllByRole("listitem");
 
     expect(suggestionItems.length).toBeGreaterThan(0);
