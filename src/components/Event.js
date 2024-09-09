@@ -54,7 +54,7 @@ const Event = ({ event, forceCollapse, index }) => {
           </Button>
         </div>
       )}
-      <Button variant="primary" className="details-btn" onClick={toggleDetails}>
+      <Button variant="primary" className="details-btn" onClick={toggleDetails} data-testid={`btn-${index}`}>
         {showDetails ? "Hide Details" : "Show Details"}
       </Button>
       {/* FIXME: Remove after development */}

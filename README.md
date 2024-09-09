@@ -95,11 +95,6 @@ Scenario: User can collapse an event to hide details
   Then the event element should collapse
   And the event details should be hidden
 
-Scenario: User toggles event details
-  Given the user is viewing an event in the list
-  When the user clicks on the show/hide details button for an event
-  Then the app should toggle the visibility of additional details for that event
-
 Scenario: User expands multiple event details
   Given the user is viewing the event list
   When the user clicks to show details for multiple events
