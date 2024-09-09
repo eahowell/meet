@@ -36,6 +36,7 @@ defineFeature(feature, (test) => {
       });
     });
   });
+  
   test("User can expand an event to see details", ({
     given,
     when,
