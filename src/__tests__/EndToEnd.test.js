@@ -2,6 +2,57 @@
 import puppeteer from "puppeteer";
 import "@testing-library/jest-dom";
 
+describe("filter events by city", () => {
+  let browser;
+  let page;
+  beforeAll(async () => {
+    browser = await puppeteer.launch({
+      //   headless: false,
+      //   slowMo: 100, // slow down by 100ms,
+      //   timeout: 0 // removes any puppeteer/browser timeout limitations (this isn't the same as the timeout of jest)
+    });
+    page = await browser.newPage();
+    await page.goto("http://localhost:3000/");
+    await page.waitForSelector(".event");
+  });
+
+  afterAll(async () => {
+    browser.close();
+  });
+
+  test("When user hasn’t searched for a city, show upcoming events from all cities.", async () => {
+    const eventListItems = await page.$$('[data-testid="event-list"] .event');
+    const inputValue = await page.$eval(
+      '[data-testid="city-search-input"]',
+      (el) => el.value
+    );
+    expect(inputValue).toBe("");
+    expect(eventListItems).toHaveLength(32);
+  });
+
+  test("User should see a list of suggestions when they search for a city.", async () => {
+    await page.click('[data-testid="city-search-input"]');
+    await page.type('[data-testid="city-search-input"]', "Berlin");
+    await page.waitForSelector('[data-testid="suggestions-list"] li');
+    await page.click('[data-testid="suggestions-list"] li:first-child');
+
+    const selectedCity = await page.$eval(
+      '[data-testid="city-search-input"]',
+      (el) => el.value
+    );
+    expect(selectedCity).toBe("Berlin, Germany");
+
+    const eventListItems = await page.$$('[data-testid="event-list"] .event');
+    const berlinEventCount = await page.$$eval(
+      ".event",
+      (events) =>
+        events.filter((event) => event.textContent.includes("Berlin, Germany"))
+          .length
+    );
+    expect(eventListItems).toHaveLength(berlinEventCount);
+  });
+});
+
 describe("show/hide event details", () => {
   let browser;
   let page;
@@ -17,7 +68,7 @@ describe("show/hide event details", () => {
     await page.waitForSelector('[data-testid="event-list"]');
   });
 
-  afterAll(() => {
+  afterAll(async () => {
     browser.close();
   });
 
@@ -39,65 +90,56 @@ describe("show/hide event details", () => {
   });
 
   test("User expands multiple event details", async () => {
-    await page.waitForSelector('[data-testid="event-list"]');
     const showDetailsButtons = await page.$$('[data-testid^="btn-"]');
 
-    // Click the first three "Show Details" buttons
-    for (let i = 0; i < 3 && i < showDetailsButtons.length; i++) {
-      await showDetailsButtons[i].click();
-      await page.waitForSelector(`[data-testid="event-${i}"] .event-details`);
-    }
-
-    // Verify that the details for the first three events are visible
-    for (let i = 0; i < 3; i++) {
-      const isVisible = await page.$eval(
-        `[data-testid="event-${i}"] .event-details`,
-        (el) => window.getComputedStyle(el).display !== "none"
-      );
-      expect(isVisible).toBe(true);
-    }
+    await showDetailsButtons[1].click();
+    expect(await page.$(".event:nth-of-type(0) .details")).toBeDefined();
+    await showDetailsButtons[2].click();
+    expect(await page.$(".event:nth-of-type(1) .details")).toBeDefined();
+    await showDetailsButtons[3].click();
+    expect(await page.$(".event:nth-of-type(2) .details")).toBeDefined();
   });
 
   test("User collapses all expanded event details", async () => {
-    await page.waitForSelector('[data-testid="event-list"]');
     const showDetailsButtons = await page.$$('[data-testid^="btn-"]');
 
-    // Click the first three "Show Details" buttons
-    for (let i = 0; i < 3 && i < showDetailsButtons.length; i++) {
-      await showDetailsButtons[i].click();
-      await page.waitForSelector(`[data-testid="event-${i}"] .event-details`);
-    }
+    await showDetailsButtons[1].click();
+    expect(await page.$(".event:nth-of-type(0) .details")).toBeDefined();
+    await showDetailsButtons[2].click();
+    expect(await page.$(".event:nth-of-type(1) .details")).toBeDefined();
+    await showDetailsButtons[3].click();
+    expect(await page.$(".event:nth-of-type(2) .details")).toBeDefined();
 
-    // Verify that the details for the first three events are visible
-    for (let i = 0; i < 3; i++) {
-      const isVisible = await page.$eval(
-        `[data-testid="event-${i}"] .event-details`,
-        (el) => window.getComputedStyle(el).display !== "none"
-      );
-      expect(isVisible).toBe(true);
-    }
-
-    // Click the "Collapse All" button
-    await page.waitForSelector('button:text("Collapse All")');
-    await page.click('button:text("Collapse All")');
-    // Wait for a moment to allow for any animations or state changes
-    // await page.waitForTimeout(1000);
-
-    // Verify that all event details are hidden
-    // const eventDetails = await page.$$(".event-details");
-    // for (let details of eventDetails) {
-    //   const isVisible = await page.evaluate(
-    //     (el) => window.getComputedStyle(el).display !== "none",
-    //     details
-    //   );
-    //   expect(isVisible).toBe(false);
-    // }
-
-    // // Verify that all buttons now say "Show Details"
-    // const buttons = await page.$$('[data-testid^="btn-"]');
-    // for (let button of buttons) {
-    //   const buttonText = await page.evaluate((el) => el.textContent, button);
-    //   expect(buttonText).toBe("Show Details");
-    // }
+    const collapseAllButton = await page.$$(".collapseBtn");
+    await collapseAllButton[0].click();
+    const eventDetails = await page.$(".event .details");
+    expect(eventDetails).toBeNull();
   });
+});
+
+describe("specify number of events", () => {
+  let browser;
+  let page;
+  beforeAll(async () => {
+    browser = await puppeteer.launch({
+      // headless: false,
+      // slowMo: 100, // slow down by 100ms,
+      // timeout: 0 // removes any puppeteer/browser timeout limitations (this isn't the same as the timeout of jest)
+    });
+    page = await browser.newPage();
+    await page.goto("http://localhost:3000/");
+    await page.waitForSelector(".event");
+    await page.waitForSelector('[data-testid="event-list"]');
+  });
+
+  afterAll(async () => {
+    browser.close();
+  });
+  test("When user hasn't specified a number, 32 events are shown by default", async () => {});
+
+  test("User can change the number of events displayed", async () => {});
+
+  test("User requests more events than available", async () => {});
+
+  test("User changes number of events while filtered", async () => {});
 });

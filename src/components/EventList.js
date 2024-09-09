@@ -13,7 +13,7 @@ const EventList = ({ events }) => {
 
   return (
     <div>
-      <Button variant="primary" onClick={handleCollapseAll}>
+      <Button variant="primary" className="collapseBtn" data-testid="btn-Collapse" onClick={handleCollapseAll}>
         Collapse All
       </Button>
       <ListGroup
