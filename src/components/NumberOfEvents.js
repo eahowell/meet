@@ -19,7 +19,6 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
   return (
     <Row className=" align-items-center justify-content-center w-100">
       <Col xs="auto">
-        {/* <Form> */}
         <InputGroup
           id="number-of-events"
           data-testid="number-of-events"
@@ -33,6 +32,7 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
             type="text"
             className="number-of-events mb-2"
             aria-label="Number of Events"
+            data-testid="number-of-events-input"
             value={inputValue}
             onChange={handleInputChanged}
             onClick={(e) => e.target.select()}
@@ -48,7 +48,6 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
             style={{ fontSize: "2rem", color: "cornflowerblue" }}
           />
         </InputGroup>
-        {/* </Form> */}
       </Col>
     </Row>
   );

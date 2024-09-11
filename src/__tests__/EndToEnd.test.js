@@ -122,9 +122,9 @@ describe("specify number of events", () => {
   let page;
   beforeAll(async () => {
     browser = await puppeteer.launch({
-      // headless: false,
-      // slowMo: 100, // slow down by 100ms,
-      // timeout: 0 // removes any puppeteer/browser timeout limitations (this isn't the same as the timeout of jest)
+      //   headless: false,
+      //   slowMo: 100, // slow down by 100ms,
+      //   timeout: 0 // removes any puppeteer/browser timeout limitations (this isn't the same as the timeout of jest)
     });
     page = await browser.newPage();
     await page.goto("http://localhost:3000/");
@@ -135,11 +135,56 @@ describe("specify number of events", () => {
   afterAll(async () => {
     browser.close();
   });
-  test("When user hasn't specified a number, 32 events are shown by default", async () => {});
+  test("When user hasn't specified a number, 32 events are shown by default", async () => {
+    const eventListItems = await page.$$('[data-testid="event-list"] .event');
+    expect(eventListItems).toHaveLength(32);
+  });
 
-  test("User can change the number of events displayed", async () => {});
+  test("User can change the number of events displayed", async () => {
+    await page.click('[data-testid="number-of-events-input"]');
+    await page.type('[data-testid="number-of-events-input"]', "5");
+    const eventListItems = await page.$$('[data-testid="event-list"] .event');
+    expect(eventListItems).toHaveLength(5);
+  });
 
-  test("User requests more events than available", async () => {});
+  test("User requests more events than available", async () => {
+    // Mock data has 77 total events
+    await page.click('[data-testid="number-of-events-input"]');
+    await page.type('[data-testid="number-of-events-input"]', "100");
+    const eventListItems = await page.$$('[data-testid="event-list"] .event');
+    expect(eventListItems).toHaveLength(77);
+  });
 
-  test("User changes number of events while filtered", async () => {});
+  test("User changes number of events while filtered", async () => {
+    await page.click('[data-testid="city-search-input"]');
+    await page.type('[data-testid="city-search-input"]', "Berlin");
+    await page.waitForSelector('[data-testid="suggestions-list"] li');
+    await page.click('[data-testid="suggestions-list"] li:first-child');
+
+    const selectedCity = await page.$eval(
+      '[data-testid="city-search-input"]',
+      (el) => el.value
+    );
+    expect(selectedCity).toBe("Berlin, Germany");
+
+    const eventListItems = await page.$$('[data-testid="event-list"] .event');
+    // Mock data has 21 events in Berlin
+    expect(eventListItems).toHaveLength(21);
+
+    await page.click('[data-testid="number-of-events-input"]');
+    await page.type('[data-testid="number-of-events-input"]', "5");
+
+    const filteredeventListItems = await page.$$(
+      '[data-testid="event-list"] .event'
+    );
+    // verify each item is in Berlin
+    const eventItemsCheck = await page.$$eval(
+      ".event",
+      (events) =>
+        events.filter((event) => event.textContent.includes("Berlin, Germany"))
+          .length
+    );
+    expect(eventItemsCheck).toBe(5);
+    expect(filteredeventListItems).toHaveLength(5);
+  });
 });
