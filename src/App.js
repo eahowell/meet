@@ -1,14 +1,16 @@
 // src/App.js
 
-import React, { useState, useEffect, useCallback } from "react";
-import CitySearch from "./components/CitySearch";
-import EventList from "./components/EventList";
-import NumberOfEvents from "./components/NumberOfEvents";
+import React, { useState, useEffect, useCallback, lazy, Suspense } from "react";
+
 import { getEvents, extractLocations } from "./api";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Navbar, Container } from "react-bootstrap";
 import BrandImage from "./img/LightLogo.png";
+
+const EventList = lazy(() => import('./components/EventList'));
+const CitySearch = lazy(() => import('./components/CitySearch'));
+const NumberOfEvents = lazy(() => import('./components/NumberOfEvents'));
 
 const App = () => {
   const [events, setEvents] = useState([]);
@@ -49,17 +51,16 @@ const App = () => {
               className="page-header__item img-fluid"
             />
           </Navbar.Brand>
-          <CitySearch
-            allLocations={allLocations}
-            setCurrentCity={setCurrentCity}
-          />
-          <br />
-          <NumberOfEvents setCurrentNOE={setCurrentNOE} />
-          <br />
-          <EventList events={events} />
-        {events.length === 0 && (
-          <p className="noEventsText">No events found. Try refreshing the data and ensure you've connected your gmail account.</p>
-        )}
+          <Suspense fallback={<div>Loading...</div>}>
+            <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} />
+            <br />
+            <NumberOfEvents setCurrentNOE={setCurrentNOE} />
+            <br />
+            <EventList events={events} />
+          </Suspense>
+          {events.length === 0 && (
+            <p className="noEventsText">No events found. Try refreshing the data and ensure you've connected your gmail account.</p>
+          )}
         </Container>
       </Navbar>
     </div>

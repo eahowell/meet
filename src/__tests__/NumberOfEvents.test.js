@@ -10,6 +10,8 @@ import { getEvents } from "../api";
 import "@testing-library/jest-dom";
 import mockData from "../mock-data";
 
+import { asyncRender } from '../testUtils';
+
 jest.mock("../api");
 const setCurrentNOE = jest.fn();
 
@@ -88,11 +90,16 @@ describe("<NumberOfEvents /> component", () => {
 describe("<NumberOfEvents /> integration", () => {
   test("changes the number of events displayed when NOE input changes", async () => {
     getEvents.mockResolvedValue(mockData);
-    render(<App />);
-
+    await asyncRender(<App />);
+  
+  await waitFor(() => {
     const noeInput = screen.getByLabelText("Number of Events");
-    await userEvent.clear(noeInput);
-    await userEvent.type(noeInput, "10");
+    expect(noeInput).toBeInTheDocument();
+  });
+
+  const noeInput = screen.getByLabelText("Number of Events");
+  await userEvent.clear(noeInput);
+  await userEvent.type(noeInput, "10");
 
     await waitFor(() => {
       const eventListItems = screen.getAllByRole("listitem");

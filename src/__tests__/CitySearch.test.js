@@ -6,6 +6,7 @@ import CitySearch from "../components/CitySearch";
 import App from "../App";
 import { getEvents, extractLocations } from "../api";
 import mockData from "../mock-data";
+import { asyncRender } from "../testUtils";
 
 jest.mock("../api", () => ({
   getEvents: jest.fn(),
@@ -182,7 +183,12 @@ describe("<CitySearch /> integration", () => {
   });
 
   test("renders suggestions list when the App component is rendered", async () => {
-    render(<App />);
+    await asyncRender(<App />);
+
+    await waitFor(() => {
+      const cityTextBox = screen.getByRole("textbox", { name: /city search/i });
+      expect(cityTextBox).toBeInTheDocument();
+    });
 
     const cityTextBox = screen.getByRole("textbox", { name: /city search/i });
     await userEvent.click(cityTextBox);
@@ -196,7 +202,12 @@ describe("<CitySearch /> integration", () => {
   });
 
   test('displays "No events found" message when user selects a city with no events', async () => {
-    render(<App />);
+    await asyncRender(<App />);
+
+    await waitFor(() => {
+      const cityTextBox = screen.getByRole("textbox", { name: /city search/i });
+      expect(cityTextBox).toBeInTheDocument();
+    });
 
     const cityTextBox = screen.getByRole("textbox", { name: /city search/i });
     await userEvent.click(cityTextBox);
