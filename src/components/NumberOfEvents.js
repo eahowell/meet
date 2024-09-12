@@ -45,6 +45,8 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
             onClick={handleClear}
             role="img"
             aria-label="Reset number of events"
+            alt-text="Reset number of events"
+            tooltip="Reset number of events"
             style={{ fontSize: "2rem", color: "cornflowerblue" }}
           />
         </InputGroup>

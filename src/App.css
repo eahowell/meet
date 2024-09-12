@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:500);
+
 .App {
   /* display: flex; */
   justify-content: center;
@@ -32,21 +33,41 @@
   color: white;
 }
 
-
+.event-list-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
 .eventListItem {
-  width: 900px;
+  width: 100%;
+  max-width: 900px;
   display: flex;
   flex-direction: column;
-  text-align: Left;
+  /* text-align: Left; */
   align-items: center;
   justify-content: center;
   justify-items: center;
   border: #282c34 solid 1px;
   border-radius: 20px;
-  padding: 10px;
+  padding: 5px;
   margin: 10px;
   background-color: #A6CAEC;
+}
+
+.event-details {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  padding: 10px;
+  margin: 10px;
+  background-color: #c6dff7;
+  border: #282c34 solid 1px;
+  border-radius: 20px;
 }
 
 .citiesListItem {
@@ -56,6 +77,7 @@
 }
 
 .eventList {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -70,6 +92,10 @@
   padding: 0;
 }
 
+.details-btn {
+  width: 125px;
+  margin: 5px auto;
+}
 
 .buttonClear {
   border: none;
@@ -77,6 +103,7 @@
   padding-right: 15px;
   cursor: pointer;
 }
+
 .buttonReset {
   border: none;
   border-radius: 5px;
@@ -84,17 +111,29 @@
   cursor: pointer;
 }
 
+.toggleBtn {
+  width: 250px;
+  margin: 10px auto;
+  background-color: #fdb38b;
+  color: black;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
 button {
   cursor: pointer;
 }
-.city{
+
+.city {
   padding: 5px;
 }
 
-.labelNOE{
+.labelNOE {
   padding-right: 5px;
   color: white;
 }
-.labelCity{
+
+.labelCity {
   color: white;
 }

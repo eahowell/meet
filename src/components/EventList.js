@@ -1,19 +1,26 @@
 // src/components/EventList.js
 import { useState } from "react";
 import Event from "./Event";
-import ListGroup from "react-bootstrap/ListGroup";
-import { Button } from "react-bootstrap";
+import { ListGroup, Button, Stack } from "react-bootstrap";
 
 const EventList = ({ events }) => {
-  const [allCollapsed, setAllCollapsed] = useState(false);
+  const [forceCollapse, setForceCollapse] = useState(false);
 
   const handleCollapseAll = () => {
-    setAllCollapsed(true);
+    setForceCollapse(true);
+    // Reset forceCollapse after a short delay to allow events to collapse
+    setTimeout(() => setForceCollapse(false), 50);
   };
 
   return (
-    <div>
-      <Button variant="primary" className="collapseBtn" data-testid="btn-Collapse" onClick={handleCollapseAll}>
+    <Stack className="event-list-container" gap={3}>
+      <Button
+        variant="primary"
+        className="toggleBtn"
+        data-testid="btn-Collapse"
+        onClick={handleCollapseAll}
+        alt-text="Collapse all events"
+      >
         Collapse All
       </Button>
       <ListGroup
@@ -28,7 +35,7 @@ const EventList = ({ events }) => {
               <Event
                 key={event.id}
                 event={event}
-                forceCollapse={allCollapsed}
+                forceCollapse={forceCollapse}
                 index={index}
               />
             ))
@@ -36,7 +43,7 @@ const EventList = ({ events }) => {
       </ListGroup>
       <br />
       <br />
-    </div>
+    </Stack>
   );
 };
 
