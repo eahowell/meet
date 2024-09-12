@@ -29,7 +29,7 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
   };
 
   const resetTooltip = (props) => (
-    <Tooltip id="reset-tooltip" {...props}>
+    <Tooltip id="reset-tooltip" {...props} className="bordered-tooltip">
       Reset to default value (32)
     </Tooltip>
   );
@@ -42,13 +42,13 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
           data-testid="number-of-events"
           className="co align-items-center"
         >
-          <Form.Label htmlFor="number-of-events" className="labelNOE">
+          <Form.Label htmlFor="number-of-events" className="labelNOE me-2 ">
             Number of Events:
           </Form.Label>
           <Form.Control
             id="number-of-events"
             type="text"
-            className="number-of-events mb-2"
+            className="number-of-events number-of-events-input me-2"
             aria-label="Number of Events"
             data-testid="number-of-events-input"
             value={inputValue}
@@ -59,10 +59,11 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
             min="1"
           />
           <OverlayTrigger
-            placement="bottom"
+            placement="top"
             delay={{ show: 50, hide: 400 }}
             overlay={resetTooltip}
             show={isMobile ? true : undefined}
+            className="resetTooltip"
           >
             <i
               className="bi bi-arrow-clockwise buttonReset"
@@ -70,7 +71,7 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
               role="img"
             aria-label="Reset number of events"
             alt-text="Reset number of events"
-              style={{ fontSize: "2rem", color: "cornflowerblue", cursor: "pointer" }}
+            style={{ fontSize: "1.5rem", color: "cornflowerblue", cursor: "pointer" }}
             />
           </OverlayTrigger>
         </InputGroup>

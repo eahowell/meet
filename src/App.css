@@ -136,3 +136,15 @@ button {
 .labelCity, .noEventsText {
   color: white;
 }
+
+.bordered-tooltip .tooltip-inner {
+  border: 2px solid cornflowerblue;
+}
+.bordered-tooltip .tooltip-arrow::before {
+  border-top-color: cornflowerblue;
+}
+
+.App .number-of-events-input {
+  width: 70px;
+  text-align: center;
+}
