@@ -102,7 +102,7 @@ describe("<EventList /> component", () => {
     });
 
     // Click "Collapse All" button
-    const collapseAllButton = screen.getByText("Collapse All");
+    const collapseAllButton = screen.getByText("Hide All Event Details");
     await user.click(collapseAllButton);
 
     // Verify all events are collapsed

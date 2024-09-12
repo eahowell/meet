@@ -19,9 +19,9 @@ const EventList = ({ events }) => {
         className="toggleBtn"
         data-testid="btn-Collapse"
         onClick={handleCollapseAll}
-        alt-text="Collapse all events"
+        alt-text="Collapse all event details"
       >
-        Collapse All
+        Hide All Event Details
       </Button>
       <ListGroup
         as="ul"

@@ -110,7 +110,7 @@ describe("show/hide event details", () => {
     await showDetailsButtons[3].click();
     expect(await page.$(".event:nth-of-type(2) .details")).toBeDefined();
 
-    const collapseAllButton = await page.$$(".collapseBtn");
+    const collapseAllButton = await page.$$(".toggleBtn");
     await collapseAllButton[0].click();
     const eventDetails = await page.$(".event .details");
     expect(eventDetails).toBeNull();

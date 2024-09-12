@@ -1,6 +1,6 @@
 // src/components/NumberOfEvents.js
 import { useState } from "react";
-import { Form, InputGroup, Col, Row } from "react-bootstrap";
+import { Form, InputGroup, Col, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 const NumberOfEvents = ({ setCurrentNOE }) => {
   const [inputValue, setInputValue] = useState("32");
@@ -15,6 +15,12 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
     setInputValue("32");
     setCurrentNOE(Number("32"));
   };
+
+  const resetTooltip = (props) => (
+    <Tooltip id="reset-tooltip" {...props}>
+      Reset to default value (32)
+    </Tooltip>
+  );
 
   return (
     <Row className=" align-items-center justify-content-center w-100">
@@ -40,15 +46,20 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
             placeholder="Enter number of events"
             min="1"
           />
-          <i
-            className="bi bi-arrow-clockwise buttonReset"
-            onClick={handleClear}
-            role="img"
+          <OverlayTrigger
+            placement="right"
+            delay={{ show: 50, hide: 400 }}
+            overlay={resetTooltip}
+          >
+            <i
+              className="bi bi-arrow-clockwise buttonReset"
+              onClick={handleClear}
+              role="img"
             aria-label="Reset number of events"
             alt-text="Reset number of events"
-            tooltip="Reset number of events"
-            style={{ fontSize: "2rem", color: "cornflowerblue" }}
-          />
+              style={{ fontSize: "2rem", color: "cornflowerblue", cursor: "pointer" }}
+            />
+          </OverlayTrigger>
         </InputGroup>
       </Col>
     </Row>

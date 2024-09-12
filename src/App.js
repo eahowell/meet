@@ -57,7 +57,7 @@ const App = () => {
       <NumberOfEvents setCurrentNOE={setCurrentNOE} />
       <br />
 
-      {events.length === 0 ? <p>No events found in {currentCity}</p> : null}
+      {events.length === 0 ? <p className="noEventsText">No events found. Try refreshing the data and ensure you've connected your gmail account.</p> : null}
       <EventList events={events} />
       </Container>
     </Navbar>

@@ -176,7 +176,7 @@ defineFeature(feature, (test) => {
     });
 
     when(`the user clicks a "Collapse All" button`, async () => {
-      const collapseAllButton = screen.getByText("Collapse All");
+      const collapseAllButton = screen.getByText("Hide All Event Details");
       await userEvent.click(collapseAllButton);
     });
 
