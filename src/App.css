@@ -37,7 +37,7 @@
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;
 }
 
 .eventListItem {
@@ -45,14 +45,13 @@
   max-width: 900px;
   display: flex;
   flex-direction: column;
-  /* text-align: Left; */
   align-items: center;
   justify-content: center;
   justify-items: center;
   border: #282c34 solid 1px;
   border-radius: 20px;
   padding: 5px;
-  margin: 10px;
+  margin: 5px;
   background-color: #A6CAEC;
 }
 

@@ -1,9 +1,21 @@
 // src/components/NumberOfEvents.js
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form, InputGroup, Col, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 const NumberOfEvents = ({ setCurrentNOE }) => {
   const [inputValue, setInputValue] = useState("32");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768); // Adjust this breakpoint as needed
+    };
+
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   const handleInputChanged = (event) => {
     const value = event.target.value;
@@ -47,9 +59,10 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
             min="1"
           />
           <OverlayTrigger
-            placement="right"
+            placement="bottom"
             delay={{ show: 50, hide: 400 }}
             overlay={resetTooltip}
+            show={isMobile ? true : undefined}
           >
             <i
               className="bi bi-arrow-clockwise buttonReset"
