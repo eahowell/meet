@@ -20,7 +20,7 @@ const Event = ({ event, forceCollapse, index }) => {
     <ListGroup.Item
       as="li"
       role="listitem"
-      className="event listitem eventListItem"
+      className="event listitem eventListItem custom-border-radius"
       aria-label="event listitem"
       data-testid={`event-${index}`}
     >

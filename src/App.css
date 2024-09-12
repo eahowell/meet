@@ -148,3 +148,9 @@ button {
   width: 70px;
   text-align: center;
 }
+
+.custom-border-radius,
+.custom-border-radius:first-child,
+.custom-border-radius:last-child {
+  border-radius: 20px;
+}
