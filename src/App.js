@@ -7,10 +7,7 @@ import NumberOfEvents from "./components/NumberOfEvents";
 import { getEvents, extractLocations } from "./api";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import {
-  Navbar,
-  Container,
-} from "react-bootstrap";
+import { Navbar, Container } from "react-bootstrap";
 import BrandImage from "./img/LightLogo.png";
 
 const App = () => {
@@ -36,31 +33,35 @@ const App = () => {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, [fetchData, currentNOE]);
 
   return (
     <div className="App">
-      <Navbar >
-      <Container fluid className="d-flex flex-column align-items-center">
-        <Navbar.Brand href="#" className="mb-3">
-          <img
-            id="HeaderLogoImage"
-            src={BrandImage}
-            width="350"
-            height="50"
-            alt="Logo for CliqueUP"
-            className="page-header__item img-fluid"
+      <Navbar>
+        <Container fluid className="d-flex flex-column align-items-center">
+          <Navbar.Brand href="#" className="mb-3">
+            <img
+              id="HeaderLogoImage"
+              src={BrandImage}
+              width="350"
+              height="50"
+              alt="Logo for CliqueUP"
+              className="page-header__item img-fluid"
+            />
+          </Navbar.Brand>
+          <CitySearch
+            allLocations={allLocations}
+            setCurrentCity={setCurrentCity}
           />
-        </Navbar.Brand>
-      <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} />
-      <br />
-      <NumberOfEvents setCurrentNOE={setCurrentNOE} />
-      <br />
-
-      {events.length === 0 ? <p className="noEventsText">No events found. Try refreshing the data and ensure you've connected your gmail account.</p> : null}
-      <EventList events={events} />
-      </Container>
-    </Navbar>
+          <br />
+          <NumberOfEvents setCurrentNOE={setCurrentNOE} />
+          <br />
+          <EventList events={events} />
+        {events.length === 0 && (
+          <p className="noEventsText">No events found. Try refreshing the data and ensure you've connected your gmail account.</p>
+        )}
+        </Container>
+      </Navbar>
     </div>
   );
 };

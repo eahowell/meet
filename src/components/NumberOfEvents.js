@@ -1,6 +1,13 @@
 // src/components/NumberOfEvents.js
 import { useState, useEffect } from "react";
-import { Form, InputGroup, Col, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
+import {
+  Form,
+  InputGroup,
+  Col,
+  Row,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 const NumberOfEvents = ({ setCurrentNOE }) => {
   const [inputValue, setInputValue] = useState("32");
@@ -12,9 +19,9 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
     };
 
     checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
+    window.addEventListener("resize", checkIfMobile);
 
-    return () => window.removeEventListener('resize', checkIfMobile);
+    return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
   const handleInputChanged = (event) => {
@@ -49,6 +56,7 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
             id="number-of-events"
             type="text"
             className="number-of-events number-of-events-input me-2"
+            style={{ width: "70px", textAlign: "center" }}
             aria-label="Number of Events"
             data-testid="number-of-events-input"
             value={inputValue}
@@ -69,9 +77,13 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
               className="bi bi-arrow-clockwise buttonReset"
               onClick={handleClear}
               role="img"
-            aria-label="Reset number of events"
-            alt-text="Reset number of events"
-            style={{ fontSize: "1.5rem", color: "cornflowerblue", cursor: "pointer" }}
+              aria-label="Reset number of events"
+              alt-text="Reset number of events"
+              style={{
+                fontSize: "1.5rem",
+                color: "cornflowerblue",
+                cursor: "pointer",
+              }}
             />
           </OverlayTrigger>
         </InputGroup>

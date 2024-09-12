@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:500);
+
 
 .App {
   /* display: flex; */
@@ -36,6 +36,7 @@
 .event-list-container {
   width: 100%;
   max-width: 900px;
+  min-height: 200px;
   margin: 0 auto;
   padding: 10px;
 }
@@ -142,11 +143,6 @@ button {
 }
 .bordered-tooltip .tooltip-arrow::before {
   border-top-color: cornflowerblue;
-}
-
-.App .number-of-events-input {
-  width: 70px;
-  text-align: center;
 }
 
 .custom-border-radius,

@@ -21,6 +21,7 @@ const Event = ({ event, forceCollapse, index }) => {
       as="li"
       role="listitem"
       className="event listitem eventListItem custom-border-radius"
+      style={{ minHeight: '150px' }}
       aria-label="event listitem"
       data-testid={`event-${index}`}
     >

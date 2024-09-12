@@ -9,7 +9,8 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-2
-  timeout: 30 # in seconds
+  memorySize: 256
+  timeout: 10
   environment:
     CLIENT_ID: ${file(config.json):CLIENT_ID}
     CLIENT_SECRET: ${file(config.json):CLIENT_SECRET}
