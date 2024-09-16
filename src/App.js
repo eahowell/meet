@@ -7,11 +7,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Navbar, Container } from "react-bootstrap";
 import BrandImage from "./img/LightLogo.png";
-import Spinner from './components/Spinner';
+import Spinner from "./components/Spinner";
+import { InfoAlert } from "./components/Alert";
 
-const EventList = lazy(() => import('./components/EventList'));
-const CitySearch = lazy(() => import('./components/CitySearch'));
-const NumberOfEvents = lazy(() => import('./components/NumberOfEvents'));
+const EventList = lazy(() => import("./components/EventList"));
+const CitySearch = lazy(() => import("./components/CitySearch"));
+const NumberOfEvents = lazy(() => import("./components/NumberOfEvents"));
 
 const App = () => {
   const [events, setEvents] = useState([]);
@@ -19,6 +20,7 @@ const App = () => {
   const [currentCity, setCurrentCity] = useState("all");
   const [currentNOE, setCurrentNOE] = useState(32);
   const [isLoading, setIsLoading] = useState(true);
+  const [infoAlert, setInfoAlert] = useState("");
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -43,7 +45,6 @@ const App = () => {
 
   return (
     <div className="App">
-      
       {isLoading && <Spinner />}
       <Navbar>
         <Container fluid className="d-flex flex-column align-items-center">
@@ -57,15 +58,25 @@ const App = () => {
               className="page-header__item img-fluid"
             />
           </Navbar.Brand>
+          <div className="alerts-container">
+            {infoAlert.length ? <InfoAlert text={infoAlert} /> : null}
+          </div>
           <Suspense fallback={<Spinner />}>
-            <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} />
+            <CitySearch
+              allLocations={allLocations}
+              setCurrentCity={setCurrentCity}
+              setInfoAlert={setInfoAlert}
+            />
             <br />
             <NumberOfEvents setCurrentNOE={setCurrentNOE} />
             <br />
             <EventList events={events} />
           </Suspense>
           {!isLoading && events.length === 0 && (
-            <p className="noEventsText">No events found. Try refreshing the data and ensure you've connected your gmail account.</p>
+            <p className="noEventsText">
+              No events found. Try refreshing the data and ensure you've
+              connected your gmail account.
+            </p>
           )}
         </Container>
       </Navbar>

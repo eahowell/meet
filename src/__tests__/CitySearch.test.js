@@ -15,19 +15,20 @@ jest.mock("../api", () => ({
 
 describe("<CitySearch /> component", () => {
   let allLocations;
+  const mockSetCurrentCity = jest.fn();
+  const mockSetInfoAlert = jest.fn();
 
   beforeEach(() => {
     allLocations = extractLocations(mockData);
     getEvents.mockResolvedValue(mockData);
   });
 
-  const mockSetCurrentCity = jest.fn();
-
   test("renders text input", () => {
     render(
       <CitySearch
         allLocations={allLocations}
         setCurrentCity={mockSetCurrentCity}
+        setInfoAlert={mockSetInfoAlert}
       />
     );
     const cityTextBox = screen.getByRole("textbox");
@@ -40,6 +41,7 @@ describe("<CitySearch /> component", () => {
       <CitySearch
         allLocations={allLocations}
         setCurrentCity={mockSetCurrentCity}
+        setInfoAlert={mockSetInfoAlert}
       />
     );
     const suggestionList = screen.queryByTestId("suggestions-list");
@@ -51,6 +53,7 @@ describe("<CitySearch /> component", () => {
       <CitySearch
         allLocations={allLocations}
         setCurrentCity={mockSetCurrentCity}
+        setInfoAlert={mockSetInfoAlert}
       />
     );
     const cityTextBox = screen.getByRole("textbox");
@@ -64,6 +67,7 @@ describe("<CitySearch /> component", () => {
       <CitySearch
         allLocations={allLocations}
         setCurrentCity={mockSetCurrentCity}
+        setInfoAlert={mockSetInfoAlert}
       />
     );
     const cityTextBox = screen.getByRole("textbox");
@@ -88,6 +92,7 @@ describe("<CitySearch /> component", () => {
       <CitySearch
         allLocations={allLocations}
         setCurrentCity={mockSetCurrentCity}
+        setInfoAlert={mockSetInfoAlert}
       />
     );
     const cityTextBox = screen.getByRole("textbox");
@@ -114,6 +119,7 @@ describe("<CitySearch /> component", () => {
       <CitySearch
         allLocations={allLocations}
         setCurrentCity={mockSetCurrentCity}
+        setInfoAlert={mockSetInfoAlert}
       />
     );
     const cityTextBox = screen.getByRole("textbox");
@@ -136,6 +142,7 @@ describe("<CitySearch /> component", () => {
       <CitySearch
         allLocations={allLocations}
         setCurrentCity={mockSetCurrentCity}
+        setInfoAlert={mockSetInfoAlert}
       />
     );
     const cityTextBox = screen.getByRole("textbox");
@@ -159,6 +166,7 @@ describe("<CitySearch /> component", () => {
       <CitySearch
         allLocations={allLocations}
         setCurrentCity={mockSetCurrentCity}
+        setInfoAlert={mockSetInfoAlert}
       />
     );
     const cityTextBox = screen.getByRole("textbox");
@@ -174,6 +182,22 @@ describe("<CitySearch /> component", () => {
     await waitFor(() => {
       expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
     });
+  });
+
+  test("sets info alert when no suggestions are found", async () => {
+    render(
+      <CitySearch
+        allLocations={allLocations}
+        setCurrentCity={mockSetCurrentCity}
+        setInfoAlert={mockSetInfoAlert}
+      />
+    );
+    const cityTextBox = screen.getByRole("textbox");
+    await userEvent.type(cityTextBox, "NonexistentCity");
+
+    expect(mockSetInfoAlert).toHaveBeenCalledWith(
+      "We can not find the city you are looking for. Please try another city"
+    );
   });
 });
 

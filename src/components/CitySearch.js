@@ -1,6 +1,6 @@
 // src/components/CitySearch.js
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo,useEffect } from "react";
 import {
   Form,
   InputGroup,
@@ -8,9 +8,10 @@ import {
   CloseButton,
 } from "react-bootstrap";
 
-const CitySearch = ({ allLocations, setCurrentCity }) => {
+const CitySearch = ({ allLocations, setCurrentCity, setInfoAlert }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("");  
+  const [infoText, setInfoText] = useState("");
 
   const suggestions = useMemo(() => {
     return allLocations
@@ -19,6 +20,17 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
         })
       : [];
   }, [allLocations, query]);
+
+  useEffect(() => {
+    if (suggestions.length === 0 && query !== "") {
+      setInfoText("We can not find the city you are looking for. Please try another city");
+    } else {
+      setInfoText("");
+    }
+    if (typeof setInfoAlert === 'function') {
+      setInfoAlert(infoText);
+    }
+  }, [suggestions, query, setInfoAlert, infoText]);
 
   const handleInputChanged = (event) => {
     const value = event.target.value;
@@ -30,12 +42,14 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
     setQuery(suggestion);
     setShowSuggestions(false);
     setCurrentCity(suggestion);
+    setInfoText("");
   };
 
   const handleAllCitiesClicked = () => {
     setQuery("");
     setShowSuggestions(false);
     setCurrentCity("all");
+    setInfoText("");
   };
 
   const handleBlur = (event) => {

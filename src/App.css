@@ -150,3 +150,11 @@ button {
 .custom-border-radius:last-child {
   border-radius: 20px;
 }
+
+/* .alerts-container {
+  position: fixed;
+  top: 250px;
+  left: 250px;
+  width: 250px;
+  z-index: 1000;
+} */
