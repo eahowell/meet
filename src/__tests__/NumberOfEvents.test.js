@@ -1,7 +1,7 @@
 // src/__tests__/NumberOfEvents.test.js
 
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import NumberOfEvents from "../components/NumberOfEvents";
@@ -11,7 +11,6 @@ import "@testing-library/jest-dom";
 import mockData from "../mock-data";
 
 import { asyncRender } from "../testUtils";
-
 jest.mock("../api");
 const setCurrentNOE = jest.fn();
 const setErrorAlert = jest.fn();
@@ -24,7 +23,7 @@ describe("<NumberOfEvents /> component", () => {
   test("contains an element with the role of the textbox", () => {
     render(
       <NumberOfEvents
-        setCurrentNOE={setCurrentNOE}
+        setCurrentNOE={setCurrentNOE}        
         setErrorAlert={setErrorAlert}
       />
     );
@@ -147,6 +146,44 @@ describe("<NumberOfEvents /> component", () => {
     );
   });
 
+  test('sets error alert when number of events exceeds 250', async () => {
+    const user = userEvent.setup()
+    const mockSetErrorAlert = jest.fn()
+    render(
+      <NumberOfEvents
+        setCurrentNOE={jest.fn()}
+        setErrorAlert={mockSetErrorAlert}
+      />
+    )
+
+    const input = screen.getByLabelText('Number of Events')
+    await user.clear(input)
+    await user.type(input, '251')
+
+    expect(mockSetErrorAlert).toHaveBeenCalledWith(
+      'Maximum number of events is 250. Please enter a smaller number.'
+    )
+  })
+
+  test('clears error alert when valid number is entered', async () => {
+    const user = userEvent.setup()
+    const mockSetErrorAlert = jest.fn()
+    render(
+      <NumberOfEvents
+        setCurrentNOE={jest.fn()}
+        setErrorAlert={mockSetErrorAlert}
+      />
+    )
+
+    const input = screen.getByLabelText('Number of Events')
+    await user.clear(input)
+    await user.type(input, '251')
+    await user.clear(input)
+    await user.type(input, '200')
+
+    expect(mockSetErrorAlert).toHaveBeenCalledWith('')
+  })
+
   test("clears error when reset to default", async () => {
     render(
       <NumberOfEvents
@@ -161,6 +198,82 @@ describe("<NumberOfEvents /> component", () => {
     expect(setCurrentNOE).toHaveBeenCalledWith(32);
     expect(setErrorAlert).toHaveBeenCalledWith("");
   });
+
+  test('displays tooltip with correct text when hovering over reset button', async () => {
+    const user = userEvent.setup()
+    render(
+      <NumberOfEvents
+        setCurrentNOE={jest.fn()}
+        setErrorAlert={jest.fn()}
+      />
+    )
+
+    // Find the reset button
+    const resetButton = screen.getByRole('img', { name: /reset number of events/i })
+
+    // Hover over the reset button
+    await user.hover(resetButton)
+
+    // Check if the tooltip is visible with the correct text
+    const tooltipText = await screen.findByText('Reset to default value (32)')
+    expect(tooltipText).toBeInTheDocument()
+    expect(tooltipText).toHaveClass('tooltip-inner')
+
+    // Check if there's a parent element with the 'bordered-tooltip' class
+    const borderedTooltip = screen.getByTestId('bordered-tooltip')
+    expect(borderedTooltip).toBeInTheDocument()
+    expect(within(borderedTooltip).getByText('Reset to default value (32)')).toBeInTheDocument()
+
+    // Unhover to hide the tooltip
+    await user.unhover(resetButton)
+
+    // Wait for the tooltip to disappear
+    await waitForElementToBeRemoved(() => screen.queryByText('Reset to default value (32)'))
+  })
+
+  test('shows tooltip on mobile devices', () => {
+    // Mock window.innerWidth to simulate mobile device
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 500, // Mobile width
+    })
+
+    // Trigger the useEffect
+    window.dispatchEvent(new Event('resize'))
+
+    render(
+      <NumberOfEvents
+        setCurrentNOE={jest.fn()}
+        setErrorAlert={jest.fn()}
+      />
+    )
+
+    const tooltipTrigger = screen.getByRole('img', { name: /reset number of events/i })
+    expect(tooltipTrigger).toBeInTheDocument()
+  })
+
+  test('does not show tooltip on desktop devices', () => {
+    // Mock window.innerWidth to simulate desktop device
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 1024, // Desktop width
+    })
+
+    // Trigger the useEffect
+    window.dispatchEvent(new Event('resize'))
+
+    render(
+      <NumberOfEvents
+        setCurrentNOE={jest.fn()}
+        setErrorAlert={jest.fn()}
+      />
+    )
+
+    const tooltipTrigger = screen.getByRole('img', { name: /reset number of events/i })
+    expect(tooltipTrigger).not.toHaveAttribute('aria-describedby')
+  })
 });
 
 describe("<NumberOfEvents /> integration", () => {

@@ -49,7 +49,7 @@ const NumberOfEvents = ({ setCurrentNOE, setErrorAlert }) => {
   };
 
   const resetTooltip = (props) => (
-    <Tooltip id="reset-tooltip" {...props} className="bordered-tooltip">
+    <Tooltip id="reset-tooltip" {...props} className="bordered-tooltip" data-testid="bordered-tooltip">
       Reset to default value (32)
     </Tooltip>
   );

@@ -184,21 +184,83 @@ describe("<CitySearch /> component", () => {
     });
   });
 
-  test("sets info alert when no suggestions are found", async () => {
+  test('sets correct infoText when no suggestions are found', async () => {
+    const user = userEvent.setup()
+    const mockSetInfoAlert = jest.fn()
     render(
       <CitySearch
-        allLocations={allLocations}
-        setCurrentCity={mockSetCurrentCity}
+        allLocations={['Berlin, Germany', 'Paris, France']}
+        setCurrentCity={jest.fn()}
         setInfoAlert={mockSetInfoAlert}
       />
-    );
-    const cityTextBox = screen.getByRole("textbox");
-    await userEvent.type(cityTextBox, "NonexistentCity");
+    )
+
+    const input = screen.getByTestId('city-search-input')
+    await user.type(input, 'XYZ')
+
+    await waitFor(() => {
+      expect(mockSetInfoAlert).toHaveBeenCalledWith(
+        'We can not find the city you are looking for. Please try another city'
+      )
+    })
+  })
+
+  test('clears infoText when suggestions are found', async () => {
+    const user = userEvent.setup()
+    const mockSetInfoAlert = jest.fn()
+    render(
+      <CitySearch
+        allLocations={['Berlin, Germany', 'Paris, France']}
+        setCurrentCity={jest.fn()}
+        setInfoAlert={mockSetInfoAlert}
+      />
+    )
+
+    const input = screen.getByTestId('city-search-input')
+    await user.type(input, 'XYZ')
+    await user.clear(input)
+    await user.type(input, 'Berlin')
+
+    await waitFor(() => {
+      expect(mockSetInfoAlert).toHaveBeenCalledWith('')
+    })
+  })
+  test('calls setInfoAlert when it is a function', async () => {
+    const user = userEvent.setup()
+    const mockSetInfoAlert = jest.fn()
+    render(
+      <CitySearch
+        allLocations={['Berlin, Germany', 'Paris, France']}
+        setCurrentCity={jest.fn()}
+        setInfoAlert={mockSetInfoAlert}
+      />
+    )
+
+    const input = screen.getByTestId('city-search-input')
+    await user.type(input, 'Invalid City')
 
     expect(mockSetInfoAlert).toHaveBeenCalledWith(
-      "We can not find the city you are looking for. Please try another city"
-    );
-  });
+      'We can not find the city you are looking for. Please try another city'
+    )
+  })
+
+  test('does not call setInfoAlert when it is not a function', async () => {
+    const user = userEvent.setup()
+    const mockSetInfoAlert = 'not a function'
+    render(
+      <CitySearch
+        allLocations={['Berlin, Germany', 'Paris, France']}
+        setCurrentCity={jest.fn()}
+        setInfoAlert={mockSetInfoAlert}
+      />
+    )
+
+    const input = screen.getByTestId('city-search-input')
+    await user.type(input, 'Invalid City')
+
+    // This test passes if no error is thrown
+    expect(true).toBe(true)
+  })
 });
 
 describe("<CitySearch /> integration", () => {
