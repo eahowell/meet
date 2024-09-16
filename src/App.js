@@ -8,7 +8,8 @@ import "./App.css";
 import { Navbar, Container } from "react-bootstrap";
 import BrandImage from "./img/LightLogo.png";
 import Spinner from "./components/Spinner";
-import { InfoAlert } from "./components/Alert";
+import { InfoAlert, ErrorAlert } from "./components/Alert";
+import { ThemeProvider } from './contexts/ThemeContext';
 
 const EventList = lazy(() => import("./components/EventList"));
 const CitySearch = lazy(() => import("./components/CitySearch"));
@@ -46,6 +47,7 @@ const App = () => {
   }, [fetchData, currentNOE]);
 
   return (
+    <ThemeProvider>
     <div className="App">
       {isLoading && <Spinner />}
       <Navbar>
@@ -88,6 +90,7 @@ const App = () => {
         </Container>
       </Navbar>
     </div>
+    </ThemeProvider>
   );
 };
 

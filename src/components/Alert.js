@@ -1,8 +1,11 @@
 // src/components/Alert.js
 
 import React, { Component } from 'react';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 class Alert extends Component {
+  static contextType = ThemeContext;
+
   constructor(props) {
     super(props);
     this.color = null;
@@ -10,11 +13,15 @@ class Alert extends Component {
   }
 
   getStyle = () => {
+    const { isDarkMode } = this.context;
     return {
+      color: isDarkMode ? this.darkModeColor : this.color,
+      backgroundColor: isDarkMode ? this.darkModeBgColor : this.bgColor,
       borderWidth: "4px",
       borderStyle: "solid",
     //   fontWeight: "bold",
       borderRadius: "7px",
+      borderColor: isDarkMode ? this.darkModeColor : this.color,
       textAlign: "center",
       fontSize: "18px",
       margin: "10px 0",
@@ -36,6 +43,8 @@ class InfoAlert extends Alert {
     super(props);
     this.color = 'rgb(0, 0, 255)'; // blue
     this.bgColor = 'rgb(220, 220, 255)'; // light blue
+    this.darkModeColor = 'white'; // light blue
+    this.darkModeBgColor = 'rgb(0, 77, 150)'; // midnight blue
   }
 }
 
@@ -45,6 +54,8 @@ class ErrorAlert extends Alert {
     super(props);
     this.color = 'rgb(255, 0, 0)'; // red
     this.bgColor = 'rgb(255, 200, 200)'; // light red
+    this.darkModeColor = 'white'; // light pink
+    this.darkModeBgColor = 'rgb(191, 0, 0)'; // dark red
   }
 }
 
