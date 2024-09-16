@@ -22,6 +22,8 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [infoAlert, setInfoAlert] = useState("");
 
+  const [errorAlert, setErrorAlert] = useState("");
+
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     const allEvents = await getEvents();
@@ -60,6 +62,7 @@ const App = () => {
           </Navbar.Brand>
           <div className="alerts-container">
             {infoAlert.length ? <InfoAlert text={infoAlert} /> : null}
+            {errorAlert.length ? <ErrorAlert text={errorAlert} /> : null}
           </div>
           <Suspense fallback={<Spinner />}>
             <CitySearch
@@ -68,7 +71,11 @@ const App = () => {
               setInfoAlert={setInfoAlert}
             />
             <br />
-            <NumberOfEvents setCurrentNOE={setCurrentNOE} />
+            
+            <NumberOfEvents
+              setCurrentNOE={setCurrentNOE}
+              setErrorAlert={setErrorAlert}
+            />
             <br />
             <EventList events={events} />
           </Suspense>

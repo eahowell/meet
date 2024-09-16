@@ -9,7 +9,8 @@ import {
   Tooltip,
 } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
-const NumberOfEvents = ({ setCurrentNOE }) => {
+
+const NumberOfEvents = ({ setCurrentNOE, setErrorAlert }) => {
   const [inputValue, setInputValue] = useState("32");
   const [isMobile, setIsMobile] = useState(false);
 
@@ -26,13 +27,25 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
 
   const handleInputChanged = (event) => {
     const value = event.target.value;
-    // const numberValue = Math.abs(Math.round(Number(value)));
     setInputValue(value);
-    setCurrentNOE(Number(value)); // Update the NOE in the parent component
+
+    const numberValue = Number(value);
+
+    if (isNaN(numberValue) || !Number.isInteger(numberValue)) {
+      setErrorAlert("Please enter a valid integer for the number of events.");
+    } else if (numberValue <= 0) {
+      setErrorAlert("Please enter a positive number for the number of events.");
+    } else if (numberValue > 250) {
+      setErrorAlert("Maximum number of events is 250. Please enter a smaller number.");
+    } else {
+      setErrorAlert("");
+      setCurrentNOE(numberValue);
+    }
   };
   const handleClear = () => {
     setInputValue("32");
     setCurrentNOE(Number("32"));
+    setErrorAlert("");
   };
 
   const resetTooltip = (props) => (
@@ -64,7 +77,6 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
             onClick={(e) => e.target.select()}
             onFocus={(e) => e.target.select()}
             placeholder="Enter number of events"
-            min="1"
           />
           <OverlayTrigger
             placement="top"
