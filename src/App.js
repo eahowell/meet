@@ -58,7 +58,8 @@ const App = () => {
     const cachedTimestamp = localStorage.getItem("cachedEventsTimestamp");
     const formattedDate = formatTimestamp(cachedTimestamp);
     if (navigator.onLine) {
-      setWarningAlert("");
+      setWarningAlert(`You are currently offline, the current data was last refreshed on ${formattedDate}`);
+
     } else {
       const warningMessage = `You are currently offline, the current data was last refreshed on ${formattedDate}`;
       setWarningAlert(warningMessage);
@@ -88,6 +89,7 @@ const App = () => {
               {warningAlert.length ? (
                 <WarningAlert text={warningAlert} />
               ) : null}
+              <WarningAlert text={warningAlert} />
             </div>
             <Suspense fallback={<Spinner />}>
               <CitySearch
