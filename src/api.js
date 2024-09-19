@@ -1,6 +1,7 @@
 // src/api.js
 
 import mockData from "./mock-data";
+import NProgress from "nprogress";
 
 /**
  *
@@ -56,14 +57,20 @@ export const getEvents = async () => {
     const url = `https://hvb0jyjeaj.execute-api.us-east-2.amazonaws.com/dev/api/get-events/${token}`;
 
     // Check if we have cached data
-    const cachedEvents = localStorage.getItem('cachedEvents');
-    const cachedTimestamp = localStorage.getItem('cachedEventsTimestamp');
+    const cachedEvents = localStorage.getItem("cachedEvents");
+    const cachedTimestamp = localStorage.getItem("cachedEventsTimestamp");
 
-    // If we have cached data and it's less than 1 hour old, use it
-    if (cachedEvents && cachedTimestamp) {
+    // If it returns true (the user is online), the app will request data from the Google Calendar API; however, if it returns false (the user is offline), the app will load the event list data stored in localStorage
+    if (!navigator.onLine) {
+      const events = localStorage.getItem("cachedEvents");
+      NProgress.done();
+      return events ? JSON.parse(events) : [];
+      // If we have cached data and it's less than 30 min old, use it
+    } else if (cachedEvents && cachedTimestamp) {
       const currentTime = new Date().getTime();
       const cacheAge = currentTime - parseInt(cachedTimestamp);
-      if (cacheAge < 3600000) { // 1 hour in milliseconds
+      if (cacheAge < 1800000) {
+        // 30 min in milliseconds
         return JSON.parse(cachedEvents);
       }
     }
@@ -72,9 +79,13 @@ export const getEvents = async () => {
     const response = await fetch(url);
     const result = await response.json();
     if (result) {
+      NProgress.done();
       // Cache the new data
-      localStorage.setItem('cachedEvents', JSON.stringify(result.events));
-      localStorage.setItem('cachedEventsTimestamp', new Date().getTime().toString());
+      localStorage.setItem("cachedEvents", JSON.stringify(result.events));
+      localStorage.setItem(
+        "cachedEventsTimestamp",
+        new Date().getTime().toString()
+      );
       return result.events;
     } else {
       return null;
