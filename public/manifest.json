@@ -1,15 +1,41 @@
 {
-  "short_name": "CliqueUp - Meet App",
-  "name": "Create React App Sample",
+  "short_name": "CliqueUp",
+  "name": "CliqueUp - Meet Up App",
+  "description": "CliqueUp is the app where you can find events near you!",
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "48x48",
       "type": "image/x-icon"
+    },
+    {
+      "src": "favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "LightLogo.png",
+      "sizes": "2664x1008",
+      "type": "image/png"
     }
   ],
-  "start_url": ".",
+  "start_url": "./meet/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#A6CAEC",
+  "background_color": "#1B1B1D"
 }
