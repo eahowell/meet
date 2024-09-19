@@ -42,7 +42,11 @@ const App = () => {
     setIsLoading(false);
   }, [currentCity, currentNOE]);
 
-  // Function to format timestamp to mm/dd/yyyy hh:mm am/pm
+  
+
+
+  useEffect(() => {
+    // Function to format timestamp to mm/dd/yyyy hh:mm am/pm
 function formatTimestamp(timestamp) {
   const date = new Date(parseInt(timestamp));
   return date.toLocaleString('en-US', {
@@ -54,9 +58,6 @@ function formatTimestamp(timestamp) {
     hour12: true
   });
 }
-
-
-  useEffect(() => {
     const cachedTimestamp = localStorage.getItem('lastRefreshTimestamp');
       const formattedDate = formatTimestamp(cachedTimestamp);
       console.log("cachedTimestamp", cachedTimestamp)

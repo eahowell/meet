@@ -51,12 +51,12 @@ export const getEvents = async () => {
   }
   // If it returns true (the user is online), the app will request data from the Google Calendar API; however, if it returns false (the user is offline), the app will load the event list data stored in localStorage
 
-  if (!navigator.onLine) {
-    const events = localStorage.getItem("cachedEvents");
-    NProgress.done();
-    return events ? JSON.parse(events) : [];
-    // If we have cached data and it's less than 30 min old, use it
-  }
+  // if (!navigator.onLine) {
+  //   const events = localStorage.getItem("cachedEvents");
+  //   NProgress.done();
+  //   return events ? JSON.parse(events) : [];
+  //   // If we have cached data and it's less than 30 min old, use it
+  // }
 
   const token = await getAccessToken();
 
@@ -65,18 +65,18 @@ export const getEvents = async () => {
     const url = `https://hvb0jyjeaj.execute-api.us-east-2.amazonaws.com/dev/api/get-events/${token}`;
 
     // Check if we have cached data
-    const cachedEvents = localStorage.getItem("cachedEvents");
-    const cachedTimestamp = localStorage.getItem("cachedEventsTimestamp");
+    // const cachedEvents = localStorage.getItem("cachedEvents");
+    // const cachedTimestamp = localStorage.getItem("cachedEventsTimestamp");
 
-    // If we have cached data and it's less than 30 min old, use it
-    if (cachedEvents && cachedTimestamp) {
-      const currentTime = new Date().getTime();
-      const cacheAge = currentTime - parseInt(cachedTimestamp);
-      if (cacheAge < 1800000) {
-        // 30 min in milliseconds
-        return JSON.parse(cachedEvents);
-      }
-    }
+    // // If we have cached data and it's less than 30 min old, use it
+    // if (cachedEvents && cachedTimestamp) {
+    //   const currentTime = new Date().getTime();
+    //   const cacheAge = currentTime - parseInt(cachedTimestamp);
+    //   if (cacheAge < 1800000) {
+    //     // 30 min in milliseconds
+    //     return JSON.parse(cachedEvents);
+    //   }
+    // }
 
     // If no valid cache, fetch from API
     const response = await fetch(url);
