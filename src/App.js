@@ -58,7 +58,7 @@ function formatTimestamp(timestamp) {
     hour12: true
   });
 }
-    const cachedTimestamp = localStorage.getItem('lastRefreshTimestamp');
+    const cachedTimestamp = localStorage.getItem('cachedEventsTimestamp');
       const formattedDate = formatTimestamp(cachedTimestamp);
       console.log("cachedTimestamp", cachedTimestamp)
       console.log('formattedDate', formattedDate);
