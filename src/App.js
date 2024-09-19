@@ -8,7 +8,7 @@ import "./App.css";
 import { Navbar, Container } from "react-bootstrap";
 import BrandImage from "./img/LightLogo.webp";
 import Spinner from "./components/Spinner";
-import { InfoAlert, ErrorAlert } from "./components/Alert";
+import { InfoAlert, ErrorAlert, WarningAlert } from "./components/Alert";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 const EventList = lazy(() => import("./components/EventList"));
@@ -22,8 +22,8 @@ const App = () => {
   const [currentNOE, setCurrentNOE] = useState(32);
   const [isLoading, setIsLoading] = useState(true);
   const [infoAlert, setInfoAlert] = useState("");
-
-  const [errorAlert, setErrorAlert] = useState("");
+  const [errorAlert, setErrorAlert] = useState("");  
+  const [warningAlert, setWarningAlert] = useState("");
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -42,9 +42,37 @@ const App = () => {
     setIsLoading(false);
   }, [currentCity, currentNOE]);
 
+  // Function to format timestamp to mm/dd/yyyy hh:mm am/pm
+function formatTimestamp(timestamp) {
+  const date = new Date(parseInt(timestamp));
+  return date.toLocaleString('en-US', {
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  });
+}
+
+
   useEffect(() => {
+    if (navigator.onLine) {
+      // set the warning alert message to an empty string ""
+      // setWarningAlert("");
+      const cachedTimestamp = localStorage.getItem('lastRefreshTimestamp');
+      const formattedDate = formatTimestamp(cachedTimestamp);
+
+      setWarningAlert(`You are currently offline, the current data was last refreshed on ${formattedDate}`)
+    } else {
+      // set the warning alert message to a non-empty string
+      const cachedTimestamp = localStorage.getItem('lastRefreshTimestamp');
+      const formattedDate = formatTimestamp(cachedTimestamp);
+
+      setWarningAlert(`You are currently offline, the current data was last refreshed on ${formattedDate}`)
+    }
     fetchData();
-  }, [fetchData, currentNOE]);
+  }, [currentCity, currentNOE]);
 
   return (
     <ThemeProvider>
@@ -65,6 +93,7 @@ const App = () => {
             <div className="alerts-container">
               {infoAlert.length ? <InfoAlert text={infoAlert} /> : null}
               {errorAlert.length ? <ErrorAlert text={errorAlert} /> : null}
+              {warningAlert.length ? <WarningAlert text={warningAlert} /> : null}
             </div>
             <Suspense fallback={<Spinner />}>
               <CitySearch
