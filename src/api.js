@@ -51,11 +51,11 @@ export const getEvents = async () => {
   }
   // If it returns true (the user is online), the app will request data from the Google Calendar API; however, if it returns false (the user is offline), the app will load the event list data stored in localStorage
 
-  if (!navigator.onLine) {
-    const events = localStorage.getItem("cachedEvents");
-    NProgress.done();
-    return events ? JSON.parse(events) : [];
-  }
+  // if (!navigator.onLine) {
+  //   const events = localStorage.getItem("cachedEvents");
+  //   NProgress.done();
+  //   return events ? JSON.parse(events) : [];
+  // }
 
   const token = await getAccessToken();
 
