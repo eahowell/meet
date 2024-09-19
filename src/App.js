@@ -57,22 +57,23 @@ function formatTimestamp(timestamp) {
 
 
   useEffect(() => {
+    const cachedTimestamp = localStorage.getItem('lastRefreshTimestamp');
+      const formattedDate = formatTimestamp(cachedTimestamp);
+      console.log("cachedTimestamp", cachedTimestamp)
+      console.log('formattedDate', formattedDate);
     if (navigator.onLine) {
       // set the warning alert message to an empty string ""
       // setWarningAlert("");
-      const cachedTimestamp = localStorage.getItem('lastRefreshTimestamp');
-      const formattedDate = formatTimestamp(cachedTimestamp);
-
-      setWarningAlert(`You are currently offline, the current data was last refreshed on ${formattedDate}`)
+      const warningMessage = `You are currently offline, the current data was last refreshed on ${formattedDate}`;
+      setWarningAlert(warningMessage)
     } else {
       // set the warning alert message to a non-empty string
-      const cachedTimestamp = localStorage.getItem('lastRefreshTimestamp');
-      const formattedDate = formatTimestamp(cachedTimestamp);
-
-      setWarningAlert(`You are currently offline, the current data was last refreshed on ${formattedDate}`)
+      
+      const warningMessage = `You are currently offline, the current data was last refreshed on ${formattedDate}`;
+      setWarningAlert(warningMessage)
     }
     fetchData();
-  }, [currentCity, currentNOE]);
+  }, [fetchData, currentNOE]);
 
   return (
     <ThemeProvider>
