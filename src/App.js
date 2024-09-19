@@ -56,11 +56,11 @@ const App = () => {
       });
     }
     const cachedTimestamp = localStorage.getItem("cachedEventsTimestamp");
-    console.log("cachedTimestamp", cachedTimestamp);
+    // console.log("cachedTimestamp", cachedTimestamp);
     const formattedDate = formatTimestamp(cachedTimestamp);
-    console.log("formattedDate", formattedDate);
+    // console.log("formattedDate", formattedDate);
     if (navigator.onLine) {
-      setWarningAlert(`You are currently offline, the current data was last refreshed on ${formattedDate}`);
+      setWarningAlert("");
     } else {
       const warningMessage = `You are currently offline, the current data was last refreshed on ${formattedDate}`;
       setWarningAlert(warningMessage);
@@ -90,7 +90,6 @@ const App = () => {
               {warningAlert.length ? (
                 <WarningAlert text={warningAlert} />
               ) : null}
-              <WarningAlert text={warningAlert} />
             </div>
             <Suspense fallback={<Spinner />}>
               <CitySearch
