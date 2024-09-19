@@ -49,6 +49,14 @@ export const getEvents = async () => {
   if (window.location.href.startsWith("http://localhost")) {
     return mockData;
   }
+  // If it returns true (the user is online), the app will request data from the Google Calendar API; however, if it returns false (the user is offline), the app will load the event list data stored in localStorage
+
+  if (!navigator.onLine) {
+    const events = localStorage.getItem("cachedEvents");
+    NProgress.done();
+    return events ? JSON.parse(events) : [];
+    // If we have cached data and it's less than 30 min old, use it
+  }
 
   const token = await getAccessToken();
 
@@ -60,13 +68,8 @@ export const getEvents = async () => {
     const cachedEvents = localStorage.getItem("cachedEvents");
     const cachedTimestamp = localStorage.getItem("cachedEventsTimestamp");
 
-    // If it returns true (the user is online), the app will request data from the Google Calendar API; however, if it returns false (the user is offline), the app will load the event list data stored in localStorage
-    if (!navigator.onLine) {
-      const events = localStorage.getItem("cachedEvents");
-      NProgress.done();
-      return events ? JSON.parse(events) : [];
-      // If we have cached data and it's less than 30 min old, use it
-    } else if (cachedEvents && cachedTimestamp) {
+    // If we have cached data and it's less than 30 min old, use it
+    if (cachedEvents && cachedTimestamp) {
       const currentTime = new Date().getTime();
       const cacheAge = currentTime - parseInt(cachedTimestamp);
       if (cacheAge < 1800000) {
