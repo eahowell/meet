@@ -19,7 +19,7 @@ class Alert extends Component {
       backgroundColor: isDarkMode ? this.darkModeBgColor : this.bgColor,
       borderWidth: "4px",
       borderStyle: "solid",
-    //   fontWeight: "bold",
+      fontWeight: "bold",
       borderRadius: "7px",
       borderColor: isDarkMode ? this.darkModeColor : this.color,
       textAlign: "center",
@@ -54,7 +54,7 @@ class ErrorAlert extends Alert {
     super(props);
     this.color = 'rgb(255, 0, 0)'; // red
     this.bgColor = 'rgb(255, 200, 200)'; // light red
-    this.darkModeColor = 'white'; // light pink
+    this.darkModeColor = 'white'; 
     this.darkModeBgColor = 'rgb(191, 0, 0)'; // dark red
   }
 }
@@ -66,8 +66,6 @@ class WarningAlert extends Alert {
     this.bgColor = '#FFE696'; 
     this.darkModeColor = 'black'; 
     this.darkModeBgColor = '#FFE696'; 
-    this.borderColor = '#FF7800';
-    this.fontWeight = 'bolder';
   }
 }
 
