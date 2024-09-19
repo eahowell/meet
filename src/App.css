@@ -110,8 +110,8 @@
 .toggleBtn {
   width: 250px;
   margin: 10px auto;
-  background-color: #fdb38b;
-  color: black;
+  background-color: rgb(253, 179, 139);
+  color: rgb(17, 16, 16);
   font-weight: bold;
   border: none;
   cursor: pointer;
