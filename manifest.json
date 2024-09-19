@@ -51,9 +51,27 @@
   "theme_color": "#A6CAEC",
   "background_color": "#1B1B1D",
   "screenshots": [
+        {
+      "src": "LargeTile.scale-125.webp",
+      "sizes": "388x388",
+      "type": "image/webp",
+      "form_factor": "narrow"
+    },
     {
-      "src": "splashscreen.webp",
-      "sizes": "1883x895",
+      "src": "SplashScreen.scale-400.webp",
+      "sizes": "2480x1200",
+      "type": "image/webp",
+      "form_factor": "wide"
+    },
+    {
+      "src": "LargeTile.scale-125.png",
+      "sizes": "388x388",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "SplashScreen.scale-400.png",
+      "sizes": "2480x1200",
       "type": "image/png",
       "form_factor": "wide"
     }
