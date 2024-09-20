@@ -100,6 +100,63 @@ describe("<App /> component", () => {
       expect(suggestions[0]).toHaveTextContent("See all cities");
     });
   });
+
+  test("shows warning alert when offline", async () => {
+    // Mock navigator.onLine
+    Object.defineProperty(navigator, "onLine", {
+      configurable: true,
+      value: false,
+    });
+
+    // Mock localStorage
+    const mockTimestamp = "1622505600000"; // June 1, 2021 UTC
+    const mockLocalStorage = {
+      getItem: jest.fn().mockReturnValue(mockTimestamp),
+    };
+    Object.defineProperty(window, "localStorage", {
+      value: mockLocalStorage,
+    });
+
+    getEvents.mockResolvedValue(mockData);
+
+    render(<App />);
+
+    await waitFor(() => {
+      const warningAlert = screen.getByText(/You are currently offline/i);
+      expect(warningAlert).toBeInTheDocument();
+
+      // Format date to match the exact output
+      const date = new Date(parseInt(mockTimestamp));
+      const formattedDate = date.toLocaleString("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+
+      const expectedContent = `You are currently offline, the current data was last refreshed on ${formattedDate}`;
+      expect(warningAlert).toHaveTextContent(expectedContent);
+    });
+  });
+
+  test("hides warning alert when online", async () => {
+    // Mock navigator.onLine
+    Object.defineProperty(navigator, "onLine", {
+      configurable: true,
+      value: true,
+    });
+
+    getEvents.mockResolvedValue(mockData);
+
+    render(<App />);
+
+    await waitFor(() => {
+      const warningAlert = screen.queryByText(/You are currently offline/i);
+      expect(warningAlert).not.toBeInTheDocument();
+    });
+  });
 });
 
 describe("<App /> integration", () => {

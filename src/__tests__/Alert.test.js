@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { ThemeContext } from '../contexts/ThemeContext'
-import { InfoAlert, ErrorAlert } from '../components/Alert'
+import { ThemeContext, ThemeProvider } from '../contexts/ThemeContext'
+import { InfoAlert, ErrorAlert, WarningAlert } from '../components/Alert'
 
 describe('Alert Component', () => {
   const renderWithTheme = (component, { isDarkMode = false } = {}) => {
@@ -51,4 +51,41 @@ describe('Alert Component', () => {
       borderColor: 'white',
     })
   })
+
+  test('renders warning message with correct styling', () => {
+    const warningMessage = 'This is a warning message';
+    render(
+      <ThemeProvider>
+        <WarningAlert text={warningMessage} />
+      </ThemeProvider>
+    );
+
+    const alert = screen.getByText(warningMessage);
+    expect(alert).toBeInTheDocument();
+    expect(alert).toHaveStyle({
+      color: 'black',
+      backgroundColor: '#FFE696',
+      borderColor: 'black',
+    });
+  });
+
+  test('renders warning message with dark mode styling', () => {
+    const warningMessage = 'This is a warning message';
+    const mockContext = { isDarkMode: true };
+    jest.spyOn(React, 'useContext').mockImplementation(() => mockContext);
+
+    render(
+      <ThemeProvider>
+        <WarningAlert text={warningMessage} />
+      </ThemeProvider>
+    );
+
+    const alert = screen.getByText(warningMessage);
+    expect(alert).toBeInTheDocument();
+    expect(alert).toHaveStyle({
+      color: 'black',
+      backgroundColor: '#FFE696',
+      borderColor: 'black',
+    });
+  });
 })
