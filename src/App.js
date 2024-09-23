@@ -111,12 +111,13 @@ const App = () => {
                 <div
                   className="charts-container"
                   style={{
+                    display: "grid",
                     minHeight: "200px",
                     width: "99%",
-                    maxWidth: "800px",
+                    maxWidth: "1300px",
                     margin: "0 auto",
                     padding: "20px",
-                    backgroundColor: "white",
+                    backgroundColor: "#353535",
                   }}
                 >
                   <ErrorBoundary>

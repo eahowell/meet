@@ -147,10 +147,14 @@ button {
   border-radius: 20px;
 }
 
-/* .alerts-container {
-  position: fixed;
-  top: 250px;
-  left: 250px;
-  width: 250px;
-  z-index: 1000;
-} */
+.charts-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 20px;
+}
+
+@media (max-width: 768px) {
+  .charts-container {
+    grid-template-columns: 1fr;
+  }
+}

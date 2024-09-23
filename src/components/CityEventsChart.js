@@ -46,7 +46,7 @@ const CityEventsChart = ({ events, allLocations }) => {
     <ResponsiveContainer width="99%" height={400}>
       <ScatterChart
         style={{
-          backgroundColor: isDarkMode ? "#4A6987" : "#FFEEE6",
+          backgroundColor: isDarkMode ? "#143B5F" : "#FFEEE6",
         }}
         margin={{
           top: 20,
