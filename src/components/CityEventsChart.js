@@ -12,27 +12,32 @@ import {
 } from "recharts";
 import { ThemeContext } from "../contexts/ThemeContext";
 
-const CityEventsChart = ({ events, allLocations }) => {
+const CityEventsChart = ({ events = [], allLocations = []  }) => {
   const { isDarkMode } = useContext(ThemeContext);
   const [data, setData] = useState([]);
 
   const getData = useMemo(() => {
     if (!Array.isArray(allLocations) || !Array.isArray(events)) {
+      console.log("Invalid input: events or allLocations is not an array");
       return [];
     }
-    return allLocations.map((location) => {
+    const chartData = allLocations.map((location) => {
       const count = events.filter(
         (event) => event.location === location
       ).length;
       const city = location.split(/, | - /)[0];
       return { city, count };
     });
+    return chartData;
   }, [allLocations, events]);
 
   useEffect(() => {
     setData(getData);
   }, [getData]);
 
+  if (data.length === 0) {
+    return <div>No data available for chart</div>;
+  }
   return (
     <ResponsiveContainer width="99%" height={400}>
       <ScatterChart
@@ -51,7 +56,7 @@ const CityEventsChart = ({ events, allLocations }) => {
           type="category"
           dataKey="city"
           name="City"
-          angle={60}
+          angle={45}          
           interval={0}
           tick={{ dy: 2, textAnchor: "start", transform: "translate(10, 0)" }}
           stroke={isDarkMode ? "#ECF0F1" : "#333"}
@@ -62,6 +67,7 @@ const CityEventsChart = ({ events, allLocations }) => {
           name="Number of Events"
           allowDecimals={false}
           stroke={isDarkMode ? "#ECF0F1" : "#333"}
+          label={{ value: 'Number of Events', angle: -90, position: 'insideLeft' }}
         />
         <Tooltip
           cursor={{ strokeDasharray: "3 3" }}

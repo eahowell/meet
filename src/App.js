@@ -10,11 +10,13 @@ import BrandImage from "./img/LightLogo.webp";
 import Spinner from "./components/Spinner";
 import { InfoAlert, ErrorAlert, WarningAlert } from "./components/Alert";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import CityEventsChart from "./components/CityEventsChart";
+// import CityEventsChart from "./components/CityEventsChart";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const EventList = lazy(() => import("./components/EventList"));
 const CitySearch = lazy(() => import("./components/CitySearch"));
 const NumberOfEvents = lazy(() => import("./components/NumberOfEvents"));
+const CityEventsChart = lazy(() => import("./components/CityEventsChart"));
 
 const App = () => {
   const [events, setEvents] = useState([]);
@@ -57,9 +59,7 @@ const App = () => {
       });
     }
     const cachedTimestamp = localStorage.getItem("cachedEventsTimestamp");
-    // console.log("cachedTimestamp", cachedTimestamp);
     const formattedDate = formatTimestamp(cachedTimestamp);
-    // console.log("formattedDate", formattedDate);
     if (navigator.onLine) {
       setWarningAlert("");
     } else {
@@ -105,8 +105,26 @@ const App = () => {
                 setErrorAlert={setErrorAlert}
               />
               <br />
-              <CityEventsChart events={events} allLocations={allLocations} />
-              <br />
+
+              
+                <div
+                  className="charts-container"
+                  style={{
+                    minHeight: "200px",
+                    width: "99%",
+                    maxWidth: "800px",
+                    margin: "0 auto",
+                    padding: "20px",
+                    backgroundColor: "white",
+                  }}
+                >
+                  <ErrorBoundary>
+                    <CityEventsChart
+                      events={events}
+                      allLocations={allLocations}
+                    />
+                  </ErrorBoundary>
+                </div>
               <EventList events={events} />
             </Suspense>
             {!isLoading && events.length === 0 && (
