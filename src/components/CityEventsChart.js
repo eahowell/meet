@@ -24,7 +24,7 @@ const CityEventsChart = ({ events, allLocations }) => {
       const count = events.filter(
         (event) => event.location === location
       ).length;
-      const city = location.split(", ")[0];
+      const city = location.split(/, | - /)[0];
       return { city, count };
     });
   }, [allLocations, events]);
@@ -43,7 +43,7 @@ const CityEventsChart = ({ events, allLocations }) => {
           top: 20,
           right: 20,
           bottom: 65,
-          left: 0,
+          left: -30,
         }}
       >
         <CartesianGrid stroke={isDarkMode ? "#495670" : "#ccc"} />
@@ -54,7 +54,6 @@ const CityEventsChart = ({ events, allLocations }) => {
           angle={60}
           interval={0}
           tick={{ dy: 2, textAnchor: "start", transform: "translate(10, 0)" }}
-          tickFormatter={(value) => value.split(" ")[0]}
           stroke={isDarkMode ? "#ECF0F1" : "#333"}
         />
         <YAxis
@@ -64,18 +63,18 @@ const CityEventsChart = ({ events, allLocations }) => {
           allowDecimals={false}
           stroke={isDarkMode ? "#ECF0F1" : "#333"}
         />
-        <Tooltip 
-          cursor={{ strokeDasharray: "3 3" }} 
+        <Tooltip
+          cursor={{ strokeDasharray: "3 3" }}
           contentStyle={{
             backgroundColor: isDarkMode ? "#FFEEE6" : "#fff",
             color: isDarkMode ? "#ECF0F1" : "#333",
             border: `1px solid ${isDarkMode ? "#ECF0F1" : "#ccc"}`,
           }}
         />
-        <Scatter 
-          name="Events by City" 
-          data={data} 
-          fill={isDarkMode ? "#ECF0F1" : "#0F4BB8"} 
+        <Scatter
+          name="Events by City"
+          data={data}
+          fill={isDarkMode ? "#ECF0F1" : "#0F4BB8"}
         />
       </ScatterChart>
     </ResponsiveContainer>
