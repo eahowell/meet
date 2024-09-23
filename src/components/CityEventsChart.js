@@ -1,6 +1,6 @@
 // src/components/CityEventsChart.js
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import {
   ScatterChart,
   Scatter,
@@ -10,8 +10,10 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { ThemeContext } from '../contexts/ThemeContext';
 
 const CityEventsChart = ({ events, allLocations }) => {
+    const { isDarkMode } = useContext(ThemeContext);
   const [data, setData] = useState([]);
 
   const getData = useMemo(() => {
@@ -35,7 +37,7 @@ const CityEventsChart = ({ events, allLocations }) => {
     <ResponsiveContainer width="99%" height={400}>
       <ScatterChart
         style={{
-          backgroundColor: "#FFEEE6",
+          backgroundColor: isDarkMode ? "#FFEEE6 ":  "#FFEEE6",
         }}
         margin={{
           top: 20,
@@ -51,9 +53,8 @@ const CityEventsChart = ({ events, allLocations }) => {
           name="City"
           angle={60}
           interval={0}
-          tick={{ dy: 5, textAnchor: "start", transform: "translate(10, 0)" }}
+          tick={{ dy: 2, textAnchor: "start", transform: "translate(10, 0)" }}
           tickFormatter={(value) => value.split(" ")[0]}
-          //   padding={{ left: 20, right: 20 }}
         />
         <YAxis
           type="number"
