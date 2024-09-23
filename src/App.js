@@ -105,8 +105,7 @@ const App = () => {
                 setErrorAlert={setErrorAlert}
               />
               <br />
-
-              
+              {events.length > 0  && (
                 <div
                   className="charts-container"
                   style={{
@@ -125,6 +124,7 @@ const App = () => {
                     />
                   </ErrorBoundary>
                 </div>
+              )}
               <EventList events={events} />
             </Suspense>
             {!isLoading && events.length === 0 && (

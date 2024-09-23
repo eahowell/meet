@@ -10,6 +10,11 @@ import "@testing-library/jest-dom";
 import mockData from "../mock-data";
 
 jest.mock("../api");
+jest.mock('../components/CityEventsChart', () => {
+  return function DummyCityEventsChart() {
+    return <div>CityEventsChart</div>;
+  };
+});
 
 describe("<EventList /> component", () => {
   beforeEach(() => {

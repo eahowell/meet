@@ -14,6 +14,11 @@ import { asyncRender } from "../testUtils";
 jest.mock("../api");
 const setCurrentNOE = jest.fn();
 const setErrorAlert = jest.fn();
+jest.mock('../components/CityEventsChart', () => {
+  return function DummyCityEventsChart() {
+    return <div>CityEventsChart</div>;
+  };
+});
 
 describe("<NumberOfEvents /> component", () => {
   beforeEach(() => {
