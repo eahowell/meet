@@ -10,6 +10,7 @@ import BrandImage from "./img/LightLogo.webp";
 import Spinner from "./components/Spinner";
 import { InfoAlert, ErrorAlert, WarningAlert } from "./components/Alert";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import CityEventsChart from "./components/CityEventsChart";
 
 const EventList = lazy(() => import("./components/EventList"));
 const CitySearch = lazy(() => import("./components/CitySearch"));
@@ -103,6 +104,8 @@ const App = () => {
                 setCurrentNOE={setCurrentNOE}
                 setErrorAlert={setErrorAlert}
               />
+              <br />
+              <CityEventsChart events={events} allLocations={allLocations} />
               <br />
               <EventList events={events} />
             </Suspense>
