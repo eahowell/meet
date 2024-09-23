@@ -11,12 +11,14 @@ import Spinner from "./components/Spinner";
 import { InfoAlert, ErrorAlert, WarningAlert } from "./components/Alert";
 import { ThemeProvider } from "./contexts/ThemeContext";
 // import CityEventsChart from "./components/CityEventsChart";
+import EventGenresChart from "./components/EventGenresChart";
 import ErrorBoundary from "./components/ErrorBoundary";
 
 const EventList = lazy(() => import("./components/EventList"));
 const CitySearch = lazy(() => import("./components/CitySearch"));
 const NumberOfEvents = lazy(() => import("./components/NumberOfEvents"));
 const CityEventsChart = lazy(() => import("./components/CityEventsChart"));
+// const EventGenresChart = lazy(() => import("./components/EventGenresChart"));
 
 const App = () => {
   const [events, setEvents] = useState([]);
@@ -118,6 +120,7 @@ const App = () => {
                   }}
                 >
                   <ErrorBoundary>
+                    <EventGenresChart events={events} />
                     <CityEventsChart
                       events={events}
                       allLocations={allLocations}
