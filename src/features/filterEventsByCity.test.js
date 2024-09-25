@@ -33,7 +33,7 @@ defineFeature(feature, (test) => {
 
     then("the user should see the list of all upcoming events", async () => {
       await waitFor(() => {
-        const eventList = screen.getByTestId("event-list");
+        const eventList = screen.getByTestId("eventlist");
         const eventListItems = within(eventList).getAllByRole("listitem");
         expect(eventListItems).toHaveLength(Math.min(32, mockData.length));
       });
@@ -105,7 +105,7 @@ defineFeature(feature, (test) => {
       "the user should receive a list of upcoming events in that city",
       async () => {
         await waitFor(() => {
-          const eventList = screen.getByTestId("event-list");
+          const eventList = screen.getByTestId("eventlist");
           const allRenderedEventItems =
             within(eventList).getAllByRole("listitem");
           const berlinEvents = mockData.filter(

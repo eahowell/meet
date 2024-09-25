@@ -23,7 +23,7 @@ const Event = ({ event, forceCollapse, index }) => {
       className="event listitem eventListItem custom-border-radius"
       style={{ minHeight: '150px' }}
       aria-label="event listitem"
-      data-testid={`event-${index}`}
+      data-testid={`event-${index+1}`}
     >
       <Stack gap={2}>
         <h3>{event.summary}</h3>

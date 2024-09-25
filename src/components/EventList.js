@@ -33,7 +33,7 @@ const EventList = ({ events }) => {
       <ListGroup
         as="ul"
         id="event-list"
-        data-testid="event-list"
+        data-testid="eventlist"
         aria-label="event list"
         className="eventList"
       >

@@ -3,7 +3,7 @@
 
 import { render, screen, waitFor, within } from "@testing-library/react";
 import App from "../App";
-import { getEvents } from "../api";
+import { extractLocations, getEvents } from "../api";
 import mockData from "../mock-data";
 import userEvent from "@testing-library/user-event";
 
@@ -15,10 +15,11 @@ jest.mock("../api", () => ({
 describe("<App /> component", () => {
   beforeEach(() => {
     getEvents.mockClear();
+    getEvents.mockResolvedValue(mockData);
+    extractLocations(mockData);
   });
 
   test("renders CitySearch", async () => {
-    getEvents.mockResolvedValue([]);
     render(<App />);
     await waitFor(() => {
       const citySearch = screen.getByTestId("city-search");
@@ -27,7 +28,6 @@ describe("<App /> component", () => {
   });
 
   test("renders NumberOfEvents", async () => {
-    getEvents.mockResolvedValue([]);
     render(<App />);
     await waitFor(() => {
       const numberOfEvents = screen.getByTestId("number-of-events");
@@ -36,16 +36,33 @@ describe("<App /> component", () => {
   });
 
   test("renders EventList", async () => {
-    getEvents.mockResolvedValue([]);
     render(<App />);
     await waitFor(() => {
-      const eventList = screen.getByTestId("event-list");
+      const eventList = screen.getByTestId("eventlist");
       expect(eventList).toBeInTheDocument();
     });
   });
 
+  test("renders CityEventsChart", async () => {
+    render(<App />);
+    await waitFor(async () => {
+      const chartsContainer = screen.getByTestId("charts-container");
+      expect(chartsContainer).toBeInTheDocument();
+      const CityEventsChart = screen.queryByTestId("scatterChart");
+      expect(CityEventsChart).toBeInTheDocument();
+      expect(screen.getByTestId("pieChart")).toBeInTheDocument();
+    });
+  });
+  test("renders EventGenresChart", async () => {
+    render(<App />);
+    await waitFor(async () => {
+      const chartsContainer = screen.getByTestId("charts-container");
+      expect(chartsContainer).toBeInTheDocument();
+      expect(screen.getByTestId("pieChart")).toBeInTheDocument();
+    });
+  });
+
   test("renders list of events when events are available", async () => {
-    getEvents.mockResolvedValue(mockData);
     render(<App />);
     await waitFor(() => {
       const eventListItems = screen.getAllByRole("listitem");
@@ -59,7 +76,7 @@ describe("<App /> component", () => {
 
     await waitFor(() => {
       // Check that the event list is empty
-      const eventList = screen.getByTestId("event-list");
+      const eventList = screen.getByTestId("eventlist");
       const events = within(eventList).queryAllByRole("listitem");
       expect(events).toHaveLength(0);
     });
@@ -84,7 +101,7 @@ describe("<App /> component", () => {
     render(<App />);
 
     await waitFor(() => {
-      const eventList = screen.getByTestId("event-list");
+      const eventList = screen.getByTestId("eventlist");
       const events = within(eventList).queryAllByRole("listitem");
       expect(events).toHaveLength(0);
     });
@@ -176,7 +193,7 @@ describe("<App /> integration", () => {
     await userEvent.click(berlinSuggestion);
 
     await waitFor(() => {
-      const eventList = screen.getByTestId("event-list");
+      const eventList = screen.getByTestId("eventlist");
       const allRenderedEventItems = within(eventList).getAllByRole("listitem");
       const berlinEvents = mockData.filter((event) =>
         event.location.includes("Berlin")

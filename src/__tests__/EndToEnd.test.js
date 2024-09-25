@@ -21,7 +21,7 @@ describe("filter events by city", () => {
   });
 
   test("When user hasn’t searched for a city, show upcoming events from all cities.", async () => {
-    const eventListItems = await page.$$('[data-testid="event-list"] .event');
+    const eventListItems = await page.$$('[data-testid="eventlist"] .event');
     const inputValue = await page.$eval(
       '[data-testid="city-search-input"]',
       (el) => el.value
@@ -42,7 +42,7 @@ describe("filter events by city", () => {
     );
     expect(selectedCity).toBe("Berlin, Germany");
 
-    const eventListItems = await page.$$('[data-testid="event-list"] .event');
+    const eventListItems = await page.$$('[data-testid="eventlist"] .event');
     const berlinEventCount = await page.$$eval(
       ".event",
       (events) =>
@@ -65,7 +65,7 @@ describe("show/hide event details", () => {
     page = await browser.newPage();
     await page.goto("http://localhost:3000/");
     await page.waitForSelector(".event");
-    await page.waitForSelector('[data-testid="event-list"]');
+    await page.waitForSelector('[data-testid="eventlist"]');
   });
 
   afterAll(async () => {
@@ -129,21 +129,21 @@ describe("specify number of events", () => {
     page = await browser.newPage();
     await page.goto("http://localhost:3000/");
     await page.waitForSelector(".event");
-    await page.waitForSelector('[data-testid="event-list"]');
+    await page.waitForSelector('[data-testid="eventlist"]');
   });
 
   afterAll(async () => {
     browser.close();
   });
   test("When user hasn't specified a number, 32 events are shown by default", async () => {
-    const eventListItems = await page.$$('[data-testid="event-list"] .event');
+    const eventListItems = await page.$$('[data-testid="eventlist"] .event');
     expect(eventListItems).toHaveLength(32);
   });
 
   test("User can change the number of events displayed", async () => {
     await page.click('[data-testid="number-of-events-input"]');
     await page.type('[data-testid="number-of-events-input"]', "5");
-    const eventListItems = await page.$$('[data-testid="event-list"] .event');
+    const eventListItems = await page.$$('[data-testid="eventlist"] .event');
     expect(eventListItems).toHaveLength(5);
   });
 
@@ -151,7 +151,7 @@ describe("specify number of events", () => {
     // Mock data has 77 total events
     await page.click('[data-testid="number-of-events-input"]');
     await page.type('[data-testid="number-of-events-input"]', "100");
-    const eventListItems = await page.$$('[data-testid="event-list"] .event');
+    const eventListItems = await page.$$('[data-testid="eventlist"] .event');
     expect(eventListItems).toHaveLength(77);
   });
 
@@ -167,7 +167,7 @@ describe("specify number of events", () => {
     );
     expect(selectedCity).toBe("Berlin, Germany");
 
-    const eventListItems = await page.$$('[data-testid="event-list"] .event');
+    const eventListItems = await page.$$('[data-testid="eventlist"] .event');
     // Mock data has 21 events in Berlin
     expect(eventListItems).toHaveLength(21);
 
@@ -175,7 +175,7 @@ describe("specify number of events", () => {
     await page.type('[data-testid="number-of-events-input"]', "5");
 
     const filteredeventListItems = await page.$$(
-      '[data-testid="event-list"] .event'
+      '[data-testid="eventlist"] .event'
     );
     // verify each item is in Berlin
     const eventItemsCheck = await page.$$eval(

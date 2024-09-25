@@ -24,7 +24,7 @@ defineFeature(feature, (test) => {
       render(<App />);
 
       await waitFor(() => {
-        const eventList = screen.getByTestId("event-list");
+        const eventList = screen.getByTestId("eventlist");
         eventListItems = within(eventList).getAllByRole("listitem");
         expect(eventListItems).toHaveLength(Math.min(32, mockData.length));
       });
@@ -36,7 +36,7 @@ defineFeature(feature, (test) => {
       });
     });
   });
-  
+
   test("User can expand an event to see details", ({
     given,
     when,
@@ -47,7 +47,7 @@ defineFeature(feature, (test) => {
     given("the user is viewing the list of events", async () => {
       render(<App />);
       await waitFor(() => {
-        eventList = screen.getByTestId("event-list");
+        eventList = screen.getByTestId("eventlist");
         const eventListItems = within(eventList).getAllByRole("listitem");
         expect(eventListItems).toHaveLength(Math.min(32, mockData.length));
       });
@@ -85,7 +85,7 @@ defineFeature(feature, (test) => {
       render(<App />);
 
       await waitFor(() => {
-        eventList = screen.getByTestId("event-list");
+        eventList = screen.getByTestId("eventlist");
         const eventListItems = within(eventList).getAllByRole("listitem");
         expect(eventListItems).toHaveLength(Math.min(32, mockData.length));
         firstEvent = within(eventList).getAllByRole("listitem")[0];
@@ -120,7 +120,7 @@ defineFeature(feature, (test) => {
       render(<App />);
 
       await waitFor(() => {
-        eventList = screen.getByTestId("event-list");
+        eventList = screen.getByTestId("eventlist");
         const eventListItems = within(eventList).getAllByRole("listitem");
         expect(eventListItems).toHaveLength(Math.min(32, mockData.length));
         firstEvent = within(eventList).getAllByRole("listitem")[0];
@@ -158,7 +158,7 @@ defineFeature(feature, (test) => {
       render(<App />);
 
       await waitFor(() => {
-        eventList = screen.getByTestId("event-list");
+        eventList = screen.getByTestId("eventlist");
         eventListItems = within(eventList).getAllByRole("listitem");
         expect(eventListItems).toHaveLength(Math.min(32, mockData.length));
         firstEvent = within(eventList).getAllByRole("listitem")[0];

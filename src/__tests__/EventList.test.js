@@ -122,7 +122,7 @@ describe("<EventList /> integration", () => {
     getEvents.mockResolvedValue(mockData);
     render(<App />);
     await waitFor(() => {
-      const eventList = screen.getByTestId("event-list");
+      const eventList = screen.getByTestId("eventlist");
       const eventItems = within(eventList).getAllByRole("listitem");
       expect(eventItems).toHaveLength(32);
     });
