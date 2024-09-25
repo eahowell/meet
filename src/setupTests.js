@@ -11,6 +11,7 @@ const MESSAGES_TO_IGNORE = [
   "When testing, code that causes React state updates should be wrapped into act(...):",
   "Error:",
   "The above error occurred",
+  "The width(800) and height(800) are both fixed numbers,"
 ];
 
 const originalError = console.error;
