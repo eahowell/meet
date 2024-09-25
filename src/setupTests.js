@@ -11,7 +11,9 @@ const MESSAGES_TO_IGNORE = [
   "When testing, code that causes React state updates should be wrapped into act(...):",
   "Error:",
   "The above error occurred",
-  "The width(800) and height(800) are both fixed numbers,"
+  "The width(800) and height(800) are both fixed numbers,",
+  "YAxis: Support for defaultProps will be removed in the next major release. Please use a custom hook to set default values.",
+  "XAxis: Support for defaultProps will be removed in the next major release. Please use a custom hook to set default values.",
 ];
 
 const originalError = console.error;
@@ -20,11 +22,22 @@ console.error = (...args) => {
   if (/Warning.*not wrapped in act/.test(args[0])) {
     return;
   }
+  if (/Warning.* Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead/.test(args[0])) {
+    return;
+  }
   const ignoreMessage = MESSAGES_TO_IGNORE.find((message) =>
     args.toString().includes(message)
   );
   if (!ignoreMessage) originalError(...args);
   originalError.call(console, ...args);
+};
+
+const originalWarn = console.warn;
+console.warn = (...args) => {
+  const ignoreMessage = MESSAGES_TO_IGNORE.find((message) =>
+    args.toString().includes(message)
+  );
+  if (!ignoreMessage) originalWarn(...args);
 };
 
 jest.setTimeout(30000);
