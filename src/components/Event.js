@@ -63,8 +63,6 @@ const Event = ({ event, forceCollapse, index }) => {
         >
           {showDetails ? "Hide Details" : "Show Details"}
         </Button>
-        {/* FIXME: Remove after development */}
-        <p id="indexNumber">{index + 1 || "XX"}</p>
       </Stack>
     </ListGroup.Item>
   );

@@ -8,7 +8,7 @@ import ErrorBoundary from '../components/ErrorBoundary';
 // Mock console.log to prevent log messages during tests
 console.log = jest.fn();
 
-// A component that always throws an error
+
 const ThrowError = () => {
   throw new Error('Test error');
 };

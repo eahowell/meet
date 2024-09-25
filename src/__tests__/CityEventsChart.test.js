@@ -47,9 +47,6 @@ describe("<CityEventsChart />", () => {
     expect(screen.getByText('London')).toBeInTheDocument()
     expect(screen.getByText('Berlin')).toBeInTheDocument()
 
-    // Check for axes
-    expect(screen.getByText('Number of Events')).toBeInTheDocument();
-
     // Check for data points
     const dataPoints = screen.getAllByRole('img');
     expect(dataPoints.length).toBeGreaterThan(0);

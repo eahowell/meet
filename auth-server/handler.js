@@ -52,7 +52,6 @@ module.exports.getAccessToken = async (event) => {
       };
     })
     .catch((error) => {
-      // Handle error
       return {
         statusCode: 500,
         body: JSON.stringify(error),
@@ -93,7 +92,6 @@ module.exports.getCalendarEvents = async (event) => {
       };
     })
     .catch((error) => {
-      // Handle error
       return {
         statusCode: 500,
         body: JSON.stringify(error),

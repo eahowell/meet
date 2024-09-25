@@ -63,26 +63,10 @@ export const getEvents = async () => {
     removeQuery();
     const url = `https://hvb0jyjeaj.execute-api.us-east-2.amazonaws.com/dev/api/get-events/${token}`;
 
-    // Check if we have cached data
-    // const cachedEvents = localStorage.getItem("cachedEvents");
-    // const cachedTimestamp = localStorage.getItem("cachedEventsTimestamp");
-
-    // // If we have cached data and it's less than 30 min old, use it
-    // if (cachedEvents && cachedTimestamp) {
-    //   const currentTime = new Date().getTime();
-    //   const cacheAge = currentTime - parseInt(cachedTimestamp);
-    //   if (cacheAge < 1800000) {
-    //     // 30 min in milliseconds
-    //     return JSON.parse(cachedEvents);
-    //   }
-    // }
-
-    // If no valid cache, fetch from API
     const response = await fetch(url);
     const result = await response.json();
     if (result) {
       NProgress.done();
-      // Cache the new data
       localStorage.setItem("cachedEvents", JSON.stringify(result.events));
       localStorage.setItem(
         "cachedEventsTimestamp",

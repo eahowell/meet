@@ -75,7 +75,6 @@ describe("<App /> component", () => {
     render(<App />);
 
     await waitFor(() => {
-      // Check that the event list is empty
       const eventList = screen.getByTestId("eventlist");
       const events = within(eventList).queryAllByRole("listitem");
       expect(events).toHaveLength(0);

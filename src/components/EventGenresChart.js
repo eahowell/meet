@@ -58,7 +58,7 @@ const EventGenresChart = ({ events }) => {
 
     // Handle screen resizing
     const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 600); // You can adjust the width as per your requirement
+      setIsSmallScreen(window.innerWidth < 600);
     };
 
     window.addEventListener("resize", handleResize);
