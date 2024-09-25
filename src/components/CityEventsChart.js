@@ -39,12 +39,34 @@ const CityEventsChart = ({ events, allLocations }) => {
     setData(getData);
   }, [getData]);
 
+  const CustomXAxisTick = ({ x, y, payload }) => {
+    return (
+      <g transform={`translate(${x},${y})`}>
+        <text
+          x={0}
+          y={0}
+          dy={16}
+          textAnchor="start"
+          stroke={isDarkMode ? "#ECF0F1" : "#333"}
+          transform="rotate(45)"
+          data-testid={`XAxislabel-${payload.value}`}
+          className="recharts-text recharts-cartesian-axis-tick-value x-axis-label"
+        >
+          {payload.value}
+        </text>
+      </g>
+    );
+  };
+
   if (data.length === 0) {
     return <div>No data available for chart</div>;
   }
   return (
-    <ResponsiveContainer width="99%" height={400}>
+    <div data-testid="scatterChart">
+    <ResponsiveContainer width="99%" height={400} >
       <ScatterChart
+        role="graphics-document"
+        
         style={{
           backgroundColor: isDarkMode ? "#143B5F" : "#FFEEE6",
         }}
@@ -52,7 +74,7 @@ const CityEventsChart = ({ events, allLocations }) => {
           top: 20,
           right: 20,
           bottom: 65,
-          left: -30,
+          left: -15,
         }}
       >
         <CartesianGrid stroke={isDarkMode ? "#495670" : "#ccc"} />
@@ -60,9 +82,8 @@ const CityEventsChart = ({ events, allLocations }) => {
           type="category"
           dataKey="city"
           name="City"
-          angle={45}
+          tick={<CustomXAxisTick />}
           interval={0}
-          tick={{ dy: 2, textAnchor: "start", transform: "translate(10, 0)" }}
           stroke={isDarkMode ? "#ECF0F1" : "#333"}
         />
         <YAxis
@@ -74,7 +95,8 @@ const CityEventsChart = ({ events, allLocations }) => {
           label={{
             value: "Number of Events",
             angle: -90,
-            position: "insideLeft",
+            position: "center",
+            fill: isDarkMode ? "#ECF0F1" : "#333", 
           }}
         />
         <Tooltip
@@ -92,6 +114,7 @@ const CityEventsChart = ({ events, allLocations }) => {
         />
       </ScatterChart>
     </ResponsiveContainer>
+    </div>  
   );
 };
 

@@ -45,6 +45,7 @@ const EventGenresChart = ({ events }) => {
           fill={COLORS[index]}
           textAnchor={x > cx ? "start" : "end"}
           dominantBaseline="central"
+  data-testid={`genre-label-${genres[index]}`}
         >
           {isSmallScreen
             ? `${(percent * 100).toFixed(0)}%`
@@ -70,8 +71,9 @@ const EventGenresChart = ({ events }) => {
     return <div>No data available for chart</div>;
   }
   return (
-    <ResponsiveContainer width="99%" height={400}>
-      <PieChart>
+    <div data-testid="pieChart">
+    <ResponsiveContainer width="99%" height={400}  >
+      <PieChart role="graphics-document" >
         <Pie
           data={data}
           dataKey="value"
@@ -93,6 +95,7 @@ const EventGenresChart = ({ events }) => {
         />
       </PieChart>
     </ResponsiveContainer>
+    </div>
   );
 };
 

@@ -10,7 +10,7 @@ import "@testing-library/jest-dom";
 import mockData from "../mock-data";
 
 jest.mock("../api");
-jest.mock('../components/CityEventsChart', () => {
+jest.mock("../components/CityEventsChart", () => {
   return function DummyCityEventsChart() {
     return <div>CityEventsChart</div>;
   };
@@ -126,5 +126,19 @@ describe("<EventList /> integration", () => {
       const eventItems = within(eventList).getAllByRole("listitem");
       expect(eventItems).toHaveLength(32);
     });
+  });
+  test("renders EventSkeleton components while loading", async () => {
+    getEvents.mockResolvedValue(mockData);
+    render(<App />);
+
+    expect(screen.getAllByTestId("event-skeleton")).toHaveLength(5);
+
+    await waitFor(() => {
+      expect(screen.getAllByTestId(/^event-/)).toHaveLength(
+        Math.min(32, mockData.length)
+      );
+    });
+
+    expect(screen.queryAllByTestId("event-skeleton")).toHaveLength(0);
   });
 });

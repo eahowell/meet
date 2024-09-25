@@ -110,6 +110,7 @@ const App = () => {
               {events.length > 0  && (
                 <div
                   className="charts-container"
+                  data-testid="charts-container"
                   style={{
                     display: "grid",
                     minHeight: "200px",
