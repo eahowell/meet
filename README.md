@@ -20,12 +20,14 @@ A serverless, progressive web application (PWA) built with React that fetches an
       - [Feature 5: Add an App Shortcut to the Home Screen](#feature-5-add-an-app-shortcut-to-the-home-screen)
       - [Feature 6: Display Charts Visualizing Event Details](#feature-6-display-charts-visualizing-event-details)
   - [Technologies Used](#technologies-used)
+    - [Dependencies](#dependencies)
+    - [Dev Dependencies](#dev-dependencies)
   - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
   - [Running the Application](#running-the-application)
   - [Running Tests](#running-tests)
-  - [Deployment](#deployment)
+  - [Serverless Deployment](#serverless-deployment)
   - [Contributing](#contributing)
   - [License](#license)
 
@@ -224,6 +226,44 @@ Scenario: User views charts with no data
 - Jest and React Testing Library for TDD
 - AWS
 
+### Dependencies
+-	@testing-library/jest-dom	: 	^6.5.0
+-	@testing-library/user-event	: 	^14.5.2
+-	atatus-spa	: 	^4.6.2
+-	bootstrap	: 	^5.3.3
+-	bootstrap-icons	: 	^1.11.3
+-	react	: 	^18.3.1
+-	react-bootstrap	: 	^2.10.4
+-	react-dom	: 	^18.3.1
+-	react-scripts	: 	^5.0.1
+-	recharts	: 	^2.12.7
+-	web-vitals	: 	^2.1.4
+-	workbox-background-sync	: 	^6.6.0
+-	workbox-broadcast-update	: 	^6.6.0
+-	workbox-cacheable-response	: 	^6.6.0
+-	workbox-core	: 	^6.6.0
+-	workbox-expiration	: 	^6.6.0
+-	workbox-google-analytics	: 	^6.6.1
+-	workbox-navigation-preload	: 	^6.6.0
+-	workbox-precaching	: 	^6.6.0
+-	workbox-range-requests	: 	^6.6.0
+-	workbox-routing	: 	^6.6.0
+-	workbox-strategies	: 	^6.6.0
+-	workbox-streams	: 	^6.6.0
+      
+### Dev Dependencies		
+-	@babel/plugin-proposal-private-property-in-object	: 	^7.16.7
+-	@testing-library/dom	: 	^10.4.0
+-	@testing-library/react	: 	^16.0.0
+-	@testing-library/user-event	: 	^14.5.2
+-	gh-pages	: 	^6.1.1
+-	jest	: 	^29.7.0
+-	jest-cucumber	: 	^4.5.0
+-	jest-watch-typeahead	: 	^2.2.2
+-	nprogress	: 	^0.2.0
+-	puppeteer	: 	^18.1.0
+
+
 ## Getting Started
 
 ### Prerequisites
@@ -272,16 +312,34 @@ This project uses Jest and React Testing Library for unit and integration tests.
 npm test
 ```
 
-To run tests in watch mode:
+To run all tests in watch mode and get testing coverage:
 
 ```
-npm run test:watch
+npm test -- --coverage --watchAll
 ```
 
-## Deployment
+## Serverless Deployment
 
-[Include instructions for deploying to your chosen serverless platform]
+1. Install Serverless
+```
+npm install -g serverless 
+```
+2. Create a Serverless Service
+```
+serverless create --template aws-nodejs --path auth-server
+cd auth-server
+npm init 
+```
 
+3. Configuring Your AWS Credentials
+   - Obtain security credentials from [AWS Management Console](https://aws.amazon.com/console/)
+   - Configure your new AWS credentials for Serverless
+     - Make sure you replace ACCESS_KEY_ID and SECRET_ACCESS_KEY with your own credentials! 
+```
+serverless config credentials --provider aws --key ACCESS_KEY_ID --secret SECRET_ACCESS_KEY
+```
+
+   
 ## Contributing
 
 1. Fork the repository
