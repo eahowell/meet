@@ -119,8 +119,9 @@ const App = () => {
                     backgroundColor: "#353535",
                   }}
                 >
-                  <ErrorBoundary>
+                  <ErrorBoundary>                    
                     <EventGenresChart events={events} />
+                    
                     <CityEventsChart
                       events={events}
                       allLocations={allLocations}

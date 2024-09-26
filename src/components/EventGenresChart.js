@@ -76,7 +76,8 @@ const EventGenresChart = ({ events }) => {
   }
   return (
     <div data-testid="pieChart">
-      <ResponsiveContainer width="99%" height={400}>
+      <div className="chartGroup">Event Topics</div>
+      <ResponsiveContainer width="99%" height={370}>
         <PieChart role="graphics-document">
           <Pie
             data={data}
