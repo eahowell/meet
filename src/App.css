@@ -190,3 +190,16 @@ button {
     grid-template-columns: 1fr;
   }
 }
+
+@media (prefers-color-scheme: dark) {  
+  .scatterChart {
+    background-color: "#143B5F";
+  }
+  
+}
+
+@media (color-scheme: dark) {
+  .scatterChart {
+    background-color: "#143B5F";
+  }
+}

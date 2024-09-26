@@ -1,6 +1,6 @@
 // src/components/CityEventsChart.js
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, act } from "@testing-library/react";
 import CityEventsChart from "../components/CityEventsChart";
 import { ThemeProvider } from "../contexts/ThemeContext";
 import { getEvents, extractLocations } from "../api";
@@ -24,8 +24,12 @@ jest.mock('recharts', () => {
   }
 })
 
-const renderWithTheme = (component) => {
-  return render(<ThemeProvider>{component}</ThemeProvider>);
+const renderWithTheme = (component, { isDarkMode = false } = {}) => {
+  return render(
+    <ThemeProvider value={{ isDarkMode }}>
+      {component}
+    </ThemeProvider>
+  );
 };
 
 describe("<CityEventsChart />", () => {
@@ -34,6 +38,11 @@ describe("<CityEventsChart />", () => {
   beforeEach(() => {
     allLocations = extractLocations(mockData);
     getEvents.mockResolvedValue(mockData);
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 1024,
+    });
   });
 
   test('renders chart with correct data representation', async () => { 
@@ -60,5 +69,56 @@ describe("<CityEventsChart />", () => {
       "No data available for chart"
     );
     expect(noDataMessage).toBeInTheDocument();
+  });
+
+    test('renders chart for small screens', async () => {
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 400,
+    });
+
+    renderWithTheme(<CityEventsChart events={mockData} allLocations={allLocations} />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('scatterChart')).toBeInTheDocument();
+    });
+
+    const xAxisLabels = screen.getAllByTestId(/^XAxislabel-/);
+    expect(xAxisLabels[0]).toHaveStyle({ fontSize: '10px' });
+  });
+
+  test('handles window resize', async () => {
+    renderWithTheme(<CityEventsChart events={mockData} allLocations={allLocations} />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('scatterChart')).toBeInTheDocument();
+    });
+
+    act(() => {
+      global.innerWidth = 400;
+      global.dispatchEvent(new Event('resize'));
+    });
+
+    await waitFor(() => {
+      const xAxisLabels = screen.getAllByTestId(/^XAxislabel-/);
+      expect(xAxisLabels[0]).toHaveStyle({ fontSize: '10px' });
+    });
+  });
+
+  test('renders chart with single event data', async () => {
+    const singleEventMockData = [mockData[0]];
+    const singleEventLocations = extractLocations(singleEventMockData);
+
+    renderWithTheme(
+      <CityEventsChart events={singleEventMockData} allLocations={singleEventLocations} />
+    );
+
+    await waitFor(() => {
+      expect(screen.getByTestId('scatterChart')).toBeInTheDocument();
+    });
+
+    const dataPoints = screen.getAllByRole('img');
+    expect(dataPoints).toHaveLength(1);
   });
 });

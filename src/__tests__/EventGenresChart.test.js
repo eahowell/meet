@@ -41,21 +41,6 @@ describe("<EventGenresChart />", () => {
     expect(dataPoints.length).toBeGreaterThan(0);
   });
 
-  test("displays correct genre names", async () => {
-    render(<EventGenresChart events={mockData} />);
-
-    await waitFor(() => {
-      expect(screen.getByTestId("pieChart")).toBeInTheDocument();
-    });
-
-    const genres = ["React", "JavaScript", "Node", "jQuery", "Angular"];
-    genres.forEach((genre) => {
-      const label = screen.getByText(genre);
-      expect(label).toBeInTheDocument();
-      expect(label).toHaveTextContent(genre);
-    });
-  });
-
   test("handles empty data set", async () => {
     render(<EventGenresChart events={[]} />);
 
@@ -63,5 +48,49 @@ describe("<EventGenresChart />", () => {
       "No data available for chart"
     );
     expect(noDataMessage).toBeInTheDocument();
+  });
+  describe("renderCustomizedLabel", () => {
+    test("renders label correctly for non-small screens", async () => {
+      window.innerWidth = 1024; // Set a non-small screen width
+      render(<EventGenresChart events={mockData} />);
+
+      await waitFor(() => {
+        expect(screen.getByTestId("pieChart")).toBeInTheDocument();
+      });
+
+      const genres = ["React", "JavaScript", "Node", "jQuery", "Angular"];
+      genres.forEach((genre) => {
+        const label = screen.getByText(genre);
+        expect(label).toBeInTheDocument();
+        expect(label).toHaveTextContent(genre);
+      });
+    });
+
+    test("renders label correctly for small screens", async () => {
+      window.innerWidth = 320; // Set a small screen width
+      render(<EventGenresChart events={mockData} />);
+      await waitFor(() => {
+        expect(screen.getByTestId("pieChart")).toBeInTheDocument();
+      });
+      let labels = screen.queryAllByTestId(/^genre-label-/);
+      labels.forEach((label) => {
+        expect(label).toHaveTextContent(/^\d+%$/);
+        expect(label).toHaveStyle("fill: black");
+      });
+    });
+
+    test("does not render label when percent is 0", async () => {
+      const mockEventsWithZeroPercent = mockData.map((event) => ({
+        ...event,
+        summary: "No matching genre",
+      }));
+
+      render(<EventGenresChart events={mockEventsWithZeroPercent} />);
+
+      await screen.findByTestId("pieChart");
+
+      const labels = screen.queryAllByTestId(/^genre-label-/);
+      expect(labels.length).toBe(0);
+    });
   });
 });

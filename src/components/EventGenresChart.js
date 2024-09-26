@@ -49,6 +49,7 @@ const EventGenresChart = ({ events }) => {
         dominantBaseline="central"
         style={{ fontWeight: "bold" }}
         className="pie-label"
+        role="label"
         data-testid={`genre-label-${genres[index]}`}
       >
         {isSmallScreen
