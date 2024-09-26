@@ -15,6 +15,13 @@ import { ThemeContext } from "../contexts/ThemeContext";
 const CityEventsChart = ({ events, allLocations }) => {
   const { isDarkMode } = useContext(ThemeContext);
   const [data, setData] = useState([]);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const getData = useMemo(() => {
     if (
@@ -40,6 +47,9 @@ const CityEventsChart = ({ events, allLocations }) => {
   }, [getData]);
 
   const CustomXAxisTick = ({ x, y, payload }) => {
+    const isVerySmallScreen = screenWidth <= 450;
+    const rotationAngle = isVerySmallScreen ? 60 : 45;
+    
     return (
       <g transform={`translate(${x},${y})`}>
         <text
@@ -47,10 +57,11 @@ const CityEventsChart = ({ events, allLocations }) => {
           y={0}
           dy={16}
           textAnchor="start"
-          stroke={isDarkMode ? "#ECF0F1" : "#333"}
-          transform="rotate(45)"
+          stroke={isDarkMode ? "White" : "#333"}
+          transform={`rotate(${rotationAngle})`}
           data-testid={`XAxislabel-${payload.value}`}
           className="recharts-text recharts-cartesian-axis-tick-value x-axis-label"
+          style={{ fontSize: isVerySmallScreen ? '10px' : '12px' }}
         >
           {payload.value}
         </text>
@@ -61,8 +72,13 @@ const CityEventsChart = ({ events, allLocations }) => {
   if (data.length === 0) {
     return <div>No data available for chart</div>;
   }
+
+  const chartMargin = screenWidth <= 450
+    ? { top: 10, right: 10, bottom: 40, left: -15 }
+    : { top: 20, right: 20, bottom: 50, left: -15 };
   return (
     <div data-testid="scatterChart">
+      <div className="chartGroup"># of Events Per Location</div>
     <ResponsiveContainer width="99%" height={400} >
       <ScatterChart
         role="graphics-document"
@@ -70,12 +86,7 @@ const CityEventsChart = ({ events, allLocations }) => {
         style={{
           backgroundColor: isDarkMode ? "#143B5F" : "#FFEEE6",
         }}
-        margin={{
-          top: 20,
-          right: 20,
-          bottom: 65,
-          left: -15,
-        }}
+        margin={chartMargin}
       >
         <CartesianGrid stroke={isDarkMode ? "#495670" : "#ccc"} />
         <XAxis
@@ -96,7 +107,8 @@ const CityEventsChart = ({ events, allLocations }) => {
             value: "Number of Events",
             angle: -90,
             position: "center",
-            fill: isDarkMode ? "#ECF0F1" : "#333", 
+            fill: isDarkMode ? "white" : "#333", 
+            style: { fontSize: screenWidth <= 320 ? '12px' : '14px' }
           }}
         />
         <Tooltip
