@@ -149,10 +149,19 @@ button {
 .charts-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  padding: 0px;
   border-radius: 20px;
 }
 
 .x-axis-label {
+  font-size: 16px;
+  font-weight: 100;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans";
+  font-kerning: none;
+  color: #8884d8;
+}
+
+.pie-label {
   font-size: 16px;
   font-weight: 100;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans";

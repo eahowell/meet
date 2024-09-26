@@ -29,36 +29,40 @@ const EventGenresChart = ({ events }) => {
     cx,
     cy,
     midAngle,
+    innerRadius,
     outerRadius,
     percent,
     index,
   }) => {
     const RADIAN = Math.PI / 180;
-    const radius = outerRadius;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN) * 1.07;
-    const y = cy + radius * Math.sin(-midAngle * RADIAN) * 1.07;
+    const labelMultiplier = isSmallScreen ? 0.7 : 1.09;
+    const radius = innerRadius + (outerRadius - innerRadius) * labelMultiplier;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
     // On small screens, only display the percentage inside the pie
     return percent ? (
-        <text
-          x={x}
-          y={y}
-          fill={COLORS[index]}
-          textAnchor={x > cx ? "start" : "end"}
-          dominantBaseline="central"
-  data-testid={`genre-label-${genres[index]}`}
-        >
-          {isSmallScreen
-            ? `${(percent * 100).toFixed(0)}%`
-            : `${genres[index]} ${(percent * 100).toFixed(0)}%`}
-        </text>
-      ) : null;
+      <text
+        x={x}
+        y={y}
+        fill={isSmallScreen ? "black" : COLORS[index]}
+        textAnchor={isSmallScreen ? "middle" : x > cx ? "start" : "end"}
+        dominantBaseline="central"
+        style={{ fontWeight: "bold" }}
+        className="pie-label"
+        data-testid={`genre-label-${genres[index]}`}
+      >
+        {isSmallScreen
+          ? `${(percent * 100).toFixed(0)}%`
+          : `${genres[index]} ${(percent * 100).toFixed(0)}%`}
+      </text>
+    ) : null;
   };
   useEffect(() => {
     setData(getData);
 
     // Handle screen resizing
     const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 600);
+      setIsSmallScreen(window.innerWidth < 950);
     };
 
     window.addEventListener("resize", handleResize);
@@ -72,29 +76,25 @@ const EventGenresChart = ({ events }) => {
   }
   return (
     <div data-testid="pieChart">
-    <ResponsiveContainer width="99%" height={400}  >
-      <PieChart role="graphics-document" >
-        <Pie
-          data={data}
-          dataKey="value"
-          fill="#8884d8"
-          labelLine={false}
-          label={renderCustomizedLabel}
-          outerRadius={130}
-          cx="50%"
-          cy="50%"
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index]} />
-          ))}
-        </Pie>
-        <Legend
-          align="center"
-          verticalAlign="top"
-          height={50}
-        />
-      </PieChart>
-    </ResponsiveContainer>
+      <ResponsiveContainer width="99%" height={400}>
+        <PieChart role="graphics-document">
+          <Pie
+            data={data}
+            dataKey="value"
+            fill="#8884d8"
+            labelLine={false}
+            label={renderCustomizedLabel}
+            outerRadius={125}
+            cx="50%"
+            cy="50%"
+          >
+            {data.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index]} />
+            ))}
+          </Pie>
+          <Legend align="center" verticalAlign="top" height={10} />
+        </PieChart>
+      </ResponsiveContainer>
     </div>
   );
 };
