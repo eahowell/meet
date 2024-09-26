@@ -12,7 +12,6 @@ import {
 } from "recharts";
 
 const CityEventsChart = ({ events, allLocations }) => {
-  // const { isDarkMode } = useContext(ThemeContext);
   const [data, setData] = useState([]);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
@@ -56,7 +55,7 @@ const CityEventsChart = ({ events, allLocations }) => {
           y={0}
           dy={16}
           textAnchor="start"
-          stroke=  "white" //{isDarkMode ? "White" : "#333"}
+          stroke="white"
           transform={`rotate(${rotationAngle})`}
           data-testid={`XAxislabel-${payload.value}`}
           className="recharts-text recharts-cartesian-axis-tick-value x-axis-label"
@@ -83,7 +82,7 @@ const CityEventsChart = ({ events, allLocations }) => {
         width="99%"
         height={400}
         style={{
-          backgroundColor: "#143B5F", //isDarkMode ? "#143B5F" : "#FFEEE6",
+          backgroundColor: "#143B5F",
         }}
         role="chart"
         aria-label="scatterChart"
@@ -96,47 +95,42 @@ const CityEventsChart = ({ events, allLocations }) => {
           className="scatterChart"
           aria-label="scatterChart"
           style={{
-            backgroundColor: "#143B5F", //isDarkMode ? "#143B5F" : "#FFEEE6"
+            backgroundColor: "#143B5F",
           }}
           margin={chartMargin}
         >
           <CartesianGrid stroke={"#495670"} />
-          {/* isDarkMode ? "#495670" : "#ccc" */}
           <XAxis
             type="category"
             dataKey="city"
             name="City"
             tick={<CustomXAxisTick />}
             interval={0}
-            stroke= "#ECF0F1" //{isDarkMode ? "#ECF0F1" : "#333"}
+            stroke="white"
           />
           <YAxis
             type="number"
             dataKey="count"
             name="Number of Events"
             allowDecimals={false}
-            stroke="#ECF0F1" //{isDarkMode ? "#ECF0F1" : "#333"}
+            stroke="white"
             label={{
               value: "Number of Events",
               angle: -90,
               position: "center",
-              fill: "#ECF0F1", //{isDarkMode ? "#ECF0F1" : "#333"},
+              fill: "white",
               style: { fontSize: screenWidth <= 320 ? "12px" : "14px" },
             }}
           />
           <Tooltip
             cursor={{ strokeDasharray: "3 3" }}
             contentStyle={{
-              backgroundColor: "#FFEEE6", //isDarkMode ? "#FFEEE6" : "#fff",
-              color: "#ECF0F1", //{isDarkMode ? "#ECF0F1" : "#333"}
-              border: `1px solid ${"#ECF0F1" }`,
+              backgroundColor: "#FFEEE6",
+              color: "#ECF0F1",
+              border: `1px solid ${"#ECF0F1"}`,
             }}
           />
-          <Scatter
-            name="Events by City"
-            data={data}
-            fill="#ECF0F1" //{isDarkMode ? "#ECF0F1" : "#0F4BB8"}
-          />
+          <Scatter name="Events by City" data={data} fill="white" />
         </ScatterChart>
       </ResponsiveContainer>
     </div>
