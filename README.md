@@ -1,351 +1,339 @@
-![CliqueUPLogo](public/LightLogo.webp)
+# CliqueUP 🎉
 
-# Welcome to CliqueUP!
+<div align="center">
+  <img src="public/LightLogo.webp" alt="CliqueUP Logo" width="400">
+  
+  **The app where you can find events near you!**
+  
+  [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/eahowell/meet)
+  [![Live Demo](https://img.shields.io/badge/demo-live-blue)](https://eahowell.github.io/meet/)
+  [![React](https://img.shields.io/badge/React-18.3.1-blue)](https://reactjs.org/)
+  [![PWA](https://img.shields.io/badge/PWA-enabled-purple)](https://web.dev/progressive-web-apps/)
 
-The app where you can find events near you!
+  [Live Demo](https://eahowell.github.io/meet/) • [Report Bug](https://github.com/eahowell/meet/issues) • [Request Feature](https://github.com/eahowell/meet/issues)
+</div>
 
-A serverless, progressive web application (PWA) built with React that fetches and displays upcoming events using the Google Calendar API. This project follows Test-Driven Development (TDD) practices.
+---
 
-## Table of Contents
+## 🚀 About CliqueUP
 
-- [Welcome to CliqueUP!](#welcome-to-cliqueup)
-  - [Table of Contents](#table-of-contents)
-  - [Features](#features)
-    - [Architectural Diagram](#architectural-diagram)
-    - [User Stories](#user-stories)
-      - [Feature 1: Filter Events by City](#feature-1-filter-events-by-city)
-      - [Feature 2: Show/Hide Event Details](#feature-2-showhide-event-details)
-      - [Feature 3: Specify Number of Events](#feature-3-specify-number-of-events)
-      - [Feature 4: Use the App When Offline](#feature-4-use-the-app-when-offline)
-      - [Feature 5: Add an App Shortcut to the Home Screen](#feature-5-add-an-app-shortcut-to-the-home-screen)
-      - [Feature 6: Display Charts Visualizing Event Details](#feature-6-display-charts-visualizing-event-details)
-  - [Technologies Used](#technologies-used)
-    - [Dependencies](#dependencies)
-    - [Dev Dependencies](#dev-dependencies)
-  - [Getting Started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-  - [Running the Application](#running-the-application)
-  - [Running Tests](#running-tests)
-  - [Serverless Deployment](#serverless-deployment)
-  - [Contributing](#contributing)
-  - [License](#license)
+CliqueUP is a modern, serverless Progressive Web Application (PWA) that helps you discover and explore upcoming events in your area. Built with React and powered by the Google Calendar API, it offers a seamless experience whether you're online or offline.
 
-## Features
+### ✨ Key Features
 
-- View upcoming events from Google Calendar by city
-- Offline functionality
-- Responsive design
-- Display Charts Visualizing Event Details
+- 🌍 **City-based Event Discovery** - Find events in any city worldwide
+- 📱 **Progressive Web App** - Install on your device for native app experience
+- 🔍 **Smart Filtering** - Filter events by location and customize display count
+- 📊 **Data Visualization** - Interactive charts showing event statistics
+- 🌐 **Offline Support** - Access cached events without internet connection
+- 🎨 **Responsive Design** - Optimized for all screen sizes
+- ⚡ **Fast & Lightweight** - Serverless architecture for optimal performance
 
-### Architectural Diagram
 
-![ArchitecturalDiagram](public/ArchitecturalDiagram.png)
+## 🛠️ Tech Stack
 
-### User Stories
+### Frontend
+- **React 18.3.1** - Modern UI library with hooks
+- **Bootstrap 5.3.3** - Responsive CSS framework
+- **Recharts 2.12.7** - Interactive data visualization
+- **React Bootstrap 2.10.4** - Bootstrap components for React
 
-#### Feature 1: Filter Events by City
+### Backend & APIs
+- **Google Calendar API** - Event data source
+- **AWS Lambda** - Serverless functions
+- **OAuth 2.0** - Secure authentication
 
-As a user, I want to filter events by city so that I can find events happening in my local area or a specific location I'm interested in.
+### Development & Testing
+- **Jest 29.7.0** - JavaScript testing framework
+- **React Testing Library** - Component testing utilities
+- **Puppeteer 18.1.0** - End-to-end testing
+- **Jest-Cucumber 4.5.0** - Behavior-driven development
 
-```gherkin
-Feature: Filter Events by City
+### DevOps & Deployment
+- **GitHub Pages** - Frontend hosting
+- **AWS API Gateway** - API management
+- **Serverless Framework** - Infrastructure as code
+- **Service Workers** - Offline functionality
 
-Scenario: When user hasn’t searched for a city, show upcoming events from all cities
-  Given user hasn’t searched for any city
-  When the user opens the app
-  Then the user should see the list of upcoming events
+## 🏗️ Architecture
 
-Scenario: User should see a list of suggestions when they search for a city
-  Given the main page is open
-  When user starts typing in the city textbox
-  Then the user should see a list of cities (suggestions) that match what they’ve typed
-
-Scenario: User can select a city from the suggested list
-  Given the user was typing “Berlin” in the city textbox AND the list of suggested cities is showing
-  When the user selects a city (e.g., “Berlin, Germany”) from the list
-  Then their city should be changed to that city (i.e., “Berlin, Germany”) AND the user should
-  receive a list of upcoming events in that city
-
-Scenario: User filters for a city with no events
-  Given the user is on the event listing page
-  When the user selects "Small Town" from the city filter options
-  And there are no events scheduled in Small Town
-  Then the app should display a message "No events found in Small Town"
+```mermaid
+graph TB
+    A[React App] --> B[AWS API Gateway]
+    B --> C[Lambda Functions]
+    C --> D[Google Calendar API]
+    A --> E[Service Worker]
+    E --> F[Cache Storage]
+    A --> G[Local Storage]
 ```
 
-#### Feature 2: Show/Hide Event Details
-
-As a user, I want to be able to show or hide event details so that I can quickly scan through events and focus on the ones I'm most interested in.
-
-```gherkin
-Feature: Show/Hide Event Details
-
-Scenario: An event element is collapsed by default
-  Given the user is viewing the list of events
-  Then all event elements should be in a collapsed state
-
-Scenario: User can expand an event to see details
-  Given the user is viewing the list of events
-  When the user clicks on a collapsed event element
-  Then the event element should expand
-  And the event details should be visible
-
-Scenario: User can collapse an event to hide details
-  Given the user is viewing an expanded event element
-  When the user clicks on the expanded event element
-  Then the event element should collapse
-  And the event details should be hidden
-
-Scenario: User expands multiple event details
-  Given the user is viewing the event list
-  When the user clicks to show details for multiple events
-  Then the app should display expanded details for all selected events simultaneously
-
-Scenario: User collapses all expanded event details
-  Given multiple events have their details expanded
-  When the user clicks a "Collapse All" button
-  Then the app should hide the details for all events
-```
-
-#### Feature 3: Specify Number of Events
-
-As a user, I want to specify the number of events displayed so that I can control the amount of information I see at once.
-
-```gherkin
-Feature: Specify Number of Events
-
-Scenario: When user hasn't specified a number, 32 events are shown by default
-  Given the user hasn't specified a number of events to display
-  When the user loads the event list
-  Then 32 events should be displayed
-
-  Scenario: User can change the number of events displayed
-  Given the user is viewing the event list
-  When the user specifies a different number of events to display
-  Then the specified number of events should be shown
-  And the event list should update accordingly
-
-Scenario: User requests more events than available
-  Given there are 15 total events
-  When the user selects "50" from the "Number of Events" dropdown
-  Then the app should display all 15 available events
-  And show a message "Displaying all 15 available events"
-
-Scenario: User changes number of events while filtered
-  Given the user has filtered events for "Chicago"
-  And there are 10 events in Chicago
-  When the user changes the "Number of Events" to 5
-  Then the app should display only 5 events from Chicago
-```
-
-#### Feature 4: Use the App When Offline
-
-As a user, I want to use the app when offline so that I can access event information even without an internet connection.
-
-```gherkin
-Feature: Use the App When Offline
-
-Scenario: User accesses the app without internet connection
-  Given the user has previously loaded the app with an internet connection
-  When the user opens the app without an internet connection
-  Then the app should display the last cached version of events and their details
-
-Scenario: User tries to refresh data while offline
-  Given the user is using the app offline
-  When the user attempts to refresh the event data
-  Then the app should display a message "Unable to update. Please check your internet connection"
-
-Scenario: App comes back online
-  Given the user has been using the app offline
-  When the internet connection is restored
-  And the user refreshes the app
-  Then the app should update with the latest event data
-  And display a message "Event data updated successfully"
-```
-
-#### Feature 5: Add an App Shortcut to the Home Screen
-
-As a user, I want to add an app shortcut to my home screen so that I can quickly access the app without navigating through my device's app menu.
-
-```gherkin
-Feature: Add an App Shortcut to the Home Screen
-
-Scenario: User adds app shortcut to home screen
-  Given the user has the app open in their mobile browser
-  When the user selects the "Add to Home Screen" option from the browser menu
-  Then the browser should create a shortcut to the app on the user's home screen
-
-Scenario: User attempts to add shortcut on unsupported browser
-  Given the user is using a browser that doesn't support adding shortcuts
-  When the user tries to add the app to the home screen
-  Then the app should display a message explaining the feature is not supported
-  And provide alternative instructions for bookmarking the app
-
-Scenario: User launches app from home screen shortcut
-  Given the user has added the app shortcut to their home screen
-  When the user taps the app shortcut
-  Then the app should launch directly, bypassing the browser interface
-```
-
-#### Feature 6: Display Charts Visualizing Event Details
-
-As a user, I want to see charts visualizing event details so that I can easily understand trends and patterns in the event data.
-
-```gherkin
-Feature: Display Charts Visualizing Event Details
-
-Scenario: User views charts of event data
-  Given the user is on the event statistics page
-  When the page loads
-  Then the app should display charts visualizing various aspects of event data
-
-Scenario: User interacts with a chart
-  Given the user is viewing the event statistics page
-  When the user clicks on a specific data point in a chart
-  Then the app should display detailed information about that data point
-
-Scenario: User filters chart data
-  Given the user is viewing a chart of events by category
-  When the user selects specific categories to include or exclude
-  Then the chart should update to reflect only the selected categories
-
-Scenario: User views charts with no data
-  Given there are no events in the system
-  When the user navigates to the event statistics page
-  Then the app should display a message "No data available for visualization"
-  And provide an option to add sample data for demonstration purposes
-
-```
-
-## Technologies Used
-
-- React
-- Progressive Web App (PWA) technologies
-- Google Calendar API
-- Jest and React Testing Library for TDD
-- AWS
-
-### Dependencies
--	@testing-library/jest-dom	: 	^6.5.0
--	@testing-library/user-event	: 	^14.5.2
--	atatus-spa	: 	^4.6.2
--	bootstrap	: 	^5.3.3
--	bootstrap-icons	: 	^1.11.3
--	react	: 	^18.3.1
--	react-bootstrap	: 	^2.10.4
--	react-dom	: 	^18.3.1
--	react-scripts	: 	^5.0.1
--	recharts	: 	^2.12.7
--	web-vitals	: 	^2.1.4
--	workbox-background-sync	: 	^6.6.0
--	workbox-broadcast-update	: 	^6.6.0
--	workbox-cacheable-response	: 	^6.6.0
--	workbox-core	: 	^6.6.0
--	workbox-expiration	: 	^6.6.0
--	workbox-google-analytics	: 	^6.6.1
--	workbox-navigation-preload	: 	^6.6.0
--	workbox-precaching	: 	^6.6.0
--	workbox-range-requests	: 	^6.6.0
--	workbox-routing	: 	^6.6.0
--	workbox-strategies	: 	^6.6.0
--	workbox-streams	: 	^6.6.0
-      
-### Dev Dependencies		
--	@babel/plugin-proposal-private-property-in-object	: 	^7.16.7
--	@testing-library/dom	: 	^10.4.0
--	@testing-library/react	: 	^16.0.0
--	@testing-library/user-event	: 	^14.5.2
--	gh-pages	: 	^6.1.1
--	jest	: 	^29.7.0
--	jest-cucumber	: 	^4.5.0
--	jest-watch-typeahead	: 	^2.2.2
--	nprogress	: 	^0.2.0
--	puppeteer	: 	^18.1.0
-
-
-## Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js (v14 or later)
-- npm (v6 or later)
-- Google Cloud Platform account with Calendar API enabled
+Before you begin, ensure you have:
+- **Node.js** (v16 or higher)
+- **npm** (v8 or higher)
+- **Google Cloud Platform account** with Calendar API enabled
+- **AWS account** (for serverless deployment)
 
 ### Installation
 
-1. Clone the repository:
-
-   ```
+1. **Clone the repository**
+   ```bash
    git clone https://github.com/eahowell/meet.git
    cd meet
    ```
 
-2. Install dependencies:
-
-   ```
+2. **Install dependencies**
+   ```bash
    npm install
    ```
 
-3. Set up environment variables:
-   Create a `.env` file in the root directory and add your Google Calendar API credentials:
-   ```
-   REACT_APP_GOOGLE_API_KEY=your_api_key
-   REACT_APP_GOOGLE_CLIENT_ID=your_client_id
-   ```
-
-## Running the Application
-
-To start the development server:
-
-```
-npm start
-```
-
-Visit `http://localhost:3000` in your browser to view the application.
-
-## Running Tests
-
-This project uses Jest and React Testing Library for unit and integration tests. To run the tests:
-
-```
-npm test
-```
-
-To run all tests in watch mode and get testing coverage:
-
-```
-npm test -- --coverage --watchAll
-```
-
-## Serverless Deployment
-
-1. Install Serverless
-```
-npm install -g serverless 
-```
-2. Create a Serverless Service
-```
-serverless create --template aws-nodejs --path auth-server
-cd auth-server
-npm init 
-```
-
-3. Configuring Your AWS Credentials
-   - Obtain security credentials from [AWS Management Console](https://aws.amazon.com/console/)
-   - Configure your new AWS credentials for Serverless
-     - Make sure you replace ACCESS_KEY_ID and SECRET_ACCESS_KEY with your own credentials! 
-```
-serverless config credentials --provider aws --key ACCESS_KEY_ID --secret SECRET_ACCESS_KEY
-```
-
+3. **Set up environment variables**
    
-## Contributing
+   Create a `.env` file in the root directory:
+   ```env
+   REACT_APP_GOOGLE_API_KEY=your_google_api_key
+   REACT_APP_GOOGLE_CLIENT_ID=your_google_client_id
+   ```
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+4. **Start the development server**
+   ```bash
+   npm start
+   ```
 
-## License
+5. **Open your browser**
+   
+   Navigate to `http://localhost:3000`
+
+## ⚙️ Configuration
+
+### Google Calendar API Setup
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the Google Calendar API
+4. Create credentials (API key and OAuth 2.0 client ID)
+5. Add your domain to authorized JavaScript origins
+
+### AWS Setup (for serverless backend)
+
+1. **Install Serverless Framework**
+   ```bash
+   npm install -g serverless
+   ```
+
+2. **Configure AWS credentials**
+   ```bash
+   serverless config credentials --provider aws --key YOUR_ACCESS_KEY --secret YOUR_SECRET_KEY
+   ```
+
+3. **Deploy the backend**
+   ```bash
+   cd auth-server
+   npm install
+   serverless deploy
+   ```
+
+## 🧪 Testing
+
+Run the comprehensive test suite:
+
+```bash
+# Run all tests
+npm test
+
+# Run tests with coverage
+npm test -- --coverage --watchAll
+
+# Run end-to-end tests
+npm run test:e2e
+```
+
+### Test Coverage
+- **Unit Tests** - Component logic and functionality
+- **Integration Tests** - Component interactions
+- **End-to-End Tests** - Complete user workflows
+- **BDD Tests** - Cucumber-style behavior testing
+
+## 📦 Deployment
+
+### Frontend (GitHub Pages)
+
+```bash
+npm run deploy
+```
+
+### Backend (AWS)
+
+```bash
+cd auth-server
+serverless deploy
+```
+
+## 🔧 Available Scripts
+
+| Script | Description |
+|--------|-------------|
+| `npm start` | Start development server |
+| `npm build` | Build for production |
+| `npm test` | Run test suite |
+| `npm run deploy` | Deploy to GitHub Pages |
+| `npm run eject` | Eject from Create React App |
+
+## 📱 Progressive Web App Features
+
+- **Installable** - Add to home screen on mobile/desktop
+- **Offline First** - Works without internet connection
+- **Push Notifications** - Stay updated with event changes
+- **App Shell Architecture** - Fast loading and smooth performance
+
+## 🌐 Browser Support
+
+| Browser | Version |
+|---------|---------|
+| Chrome | ≥ 70 |
+| Firefox | ≥ 65 |
+| Safari | ≥ 12 |
+| Edge | ≥ 79 |
+
+## 📊 User Stories & Features
+
+<details>
+<summary>🏙️ Filter Events by City</summary>
+
+- View events from all cities by default
+- Search and filter events by specific cities
+- Auto-suggestions for city names
+- Handle cities with no available events
+
+</details>
+
+<details>
+<summary>👁️ Show/Hide Event Details</summary>
+
+- Events collapsed by default for clean interface
+- Expand individual events to see full details
+- Support for multiple expanded events
+- Bulk collapse all expanded events
+
+</details>
+
+<details>
+<summary>🔢 Specify Number of Events</summary>
+
+- Default display of 32 events
+- Customizable event count (1-250)
+- Handles requests exceeding available events
+- Maintains filter state when changing count
+
+</details>
+
+<details>
+<summary>📴 Offline Functionality</summary>
+
+- Cache events for offline access
+- Show cached data when offline
+- Sync when connection restored
+- Offline status indicators
+
+</details>
+
+<details>
+<summary>📱 Home Screen Installation</summary>
+
+- Add app shortcut to device home screen
+- Launch directly without browser interface
+- Native app-like experience
+
+</details>
+
+<details>
+<summary>📈 Data Visualization</summary>
+
+- Interactive charts showing event statistics
+- Events by location scatter chart
+- Event topics pie chart
+- Responsive chart design
+
+</details>
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how you can help:
+
+1. **Fork the repository**
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/AmazingFeature
+   ```
+3. **Make your changes**
+4. **Add tests** for new functionality
+5. **Commit your changes**
+   ```bash
+   git commit -m 'Add some AmazingFeature'
+   ```
+6. **Push to the branch**
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
+7. **Open a Pull Request**
+
+### Development Guidelines
+
+- Follow [React best practices](https://react.dev/)
+- Write tests for all new features
+- Use meaningful commit messages
+- Update documentation as needed
+- Ensure all tests pass before submitting PR
+
+## 🐛 Troubleshooting
+
+<details>
+<summary>Common Issues</summary>
+
+**Authentication Errors**
+- Verify Google API credentials are correct
+- Check that your domain is in authorized origins
+- Ensure Calendar API is enabled
+
+**Build Failures**
+- Clear node_modules and reinstall: `rm -rf node_modules && npm install`
+- Check Node.js version compatibility
+- Verify all environment variables are set
+
+**Deployment Issues**
+- Ensure GitHub Pages is enabled in repository settings
+- Check that build completes successfully
+- Verify homepage URL in package.json
+
+</details>
+
+## 🙏 Acknowledgments
+
+- [Google Calendar API](https://developers.google.com/calendar) for event data
+- [React Team](https://react.dev/community/team) for the amazing framework  
+- [CareerFoundry](https://careerfoundry.com/) for project guidance
+- [AWS](https://aws.amazon.com/) for serverless infrastructure
+- [Bootstrap](https://getbootstrap.com/) for responsive styling
+
+## ✉️ Contact
+
+**Developer:** [Elizabeth Howell](ehowell.webdev@gmail.com)  
+**Website:** [Portfolio](http://ehowell-dev.me/PortfolioWebsite/)  
+**Twitter:** [ehowell_webdev](https://x.com/ehowell_webdev)  
+**GitHub:** [eahowell](https://github.com/eahowell)
+
+## 🔗 Links
+
+- **Live Demo**: [https://eahowell.github.io/meet/](https://eahowell.github.io/meet/)
+- **Repository**: [https://github.com/eahowell/meet](https://github.com/eahowell/meet)
+- **Issues**: [https://github.com/eahowell/meet/issues](https://github.com/eahowell/meet/issues)
+
+---
+
+<div align="center">
+  <p>Made with ❤️ by the CliqueUP team</p>
+  <p>⭐ Star this repo if you found it helpful!</p>
+</div>
